@@ -31,6 +31,7 @@ import socket
 from threading       import Thread
 
 from src.utils.templates.workerprocess import WorkerProcess
+from src.utils.remotecontrol import xbox
 
 class RemoteControlReceiver(WorkerProcess):
     # ===================================== INIT =========================================
@@ -49,7 +50,7 @@ class RemoteControlReceiver(WorkerProcess):
         super(RemoteControlReceiver,self).__init__( inPs, outPs)
 
         self.port       =   12244
-        self.serverIp   =   '192.168.0.138'
+        self.serverIp   =   '192.168.0.220'
     # ===================================== RUN ==========================================
     def run(self):
         """Apply the initializing methods and start the threads
@@ -89,6 +90,7 @@ class RemoteControlReceiver(WorkerProcess):
                 bts, addr = self.server_socket.recvfrom(1024)
 
                 bts     =  bts.decode()
+                print(bts)
                 command =  json.loads(bts)
 
                 for outP in outPs:
