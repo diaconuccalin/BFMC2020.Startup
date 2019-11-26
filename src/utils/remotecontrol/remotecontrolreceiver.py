@@ -90,7 +90,6 @@ class RemoteControlReceiver(WorkerProcess):
                 bts, addr = self.server_socket.recvfrom(1024)
 
                 bts     =  bts.decode()
-                print(bts)
                 command =  json.loads(bts)
 
                 for outP in outPs:
