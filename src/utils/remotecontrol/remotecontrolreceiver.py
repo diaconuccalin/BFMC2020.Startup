@@ -49,7 +49,7 @@ class RemoteControlReceiver(WorkerProcess):
         super(RemoteControlReceiver,self).__init__( inPs, outPs)
 
         self.port       =   12244
-        self.serverIp   =   '192.168.0.220'
+        self.serverIp   =   '192.168.0.138'
     # ===================================== RUN ==========================================
     def run(self):
         """Apply the initializing methods and start the threads
