@@ -69,7 +69,7 @@ class RcBrain:
 
         #----------------- DEFAULT VALUES ----------------------
         #when the RC is reset, this are the default values
-        self.default_configParam = RcBrainConfigParams(20.5,20.0,1.5,2.0)
+        self.default_configParam = RcBrainConfigParams(20.5,30.0,1.5,2.0)
         
         #----------------- PARAMETERS -------------------------
         #this parameter can be modified via key events. 
