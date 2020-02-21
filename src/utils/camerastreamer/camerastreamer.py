@@ -142,7 +142,7 @@ class CameraStreamer(WorkerProcess):
                 width = 700
                 height = 400
 
-                #img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
+                img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
                 #img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 #img = img[(int(height/1.8)):(height - 30), (int(width*0.2)):(width - (int(width*0.15)))]
                 #img = cv2.GaussianBlur(img, (5,1), 0)
