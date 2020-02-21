@@ -137,7 +137,7 @@ class CameraStreamer(WorkerProcess):
 
         while True:
             try:
-                stamps, image = inP.recv()
+                stamps, img = inP.recv()
 
                 width = 700
                 height = 400
@@ -156,8 +156,8 @@ class CameraStreamer(WorkerProcess):
 
                 img = cropRegion(img, np.array([roiVertices], np.int32),)
                  
-                result, image = cv2.imencode('.jpg', image, encode_param)
-                data   =  image.tobytes()
+                result, img = cv2.imencode('.jpg', img, encode_param)
+                data   =  img.tobytes()
                 size   =  len(data)
 
                 self.connection.write(struct.pack("<L",size))
