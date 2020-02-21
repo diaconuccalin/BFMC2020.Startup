@@ -148,8 +148,8 @@ class CameraStreamer(WorkerProcess):
                 print(img.dtype)
                 #img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
                 #img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-                #img = img[(int(height/1.8)):(height - 30), (int(width*0.2)):(width - (int(width*0.15)))]
-                img = cv2.GaussianBlur(img, (5,1), 0)
+                img = img[(int(height/1.8)):(height - 30), (int(width*0.2)):(width - (int(width*0.15)))]
+                #img = cv2.GaussianBlur(img, (5,1), 0)
                 print("AFTER:")
                 print(img.shape)
                 print(img.size)
@@ -163,7 +163,7 @@ class CameraStreamer(WorkerProcess):
                 #]
 
                 #img = cropRegion(img, np.array([roiVertices], np.int32),)
-                 
+                
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
                 size   =  len(data)
