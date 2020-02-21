@@ -143,7 +143,7 @@ class CameraStreamer(WorkerProcess):
                 height = 400
 
                 print("BEFORE:")
-                #print(type(inP))
+                print(type(inP))
                 print(stamps)
                 print(img.shape)
                 print(img.size)
