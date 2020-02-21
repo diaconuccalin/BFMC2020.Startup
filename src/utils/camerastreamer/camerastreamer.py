@@ -138,6 +138,7 @@ class CameraStreamer(WorkerProcess):
         while True:
             try:
                 stamps, img = inP.recv()
+                print(type(inP))
 
                 #img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
                 #img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
