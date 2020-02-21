@@ -142,17 +142,17 @@ class CameraStreamer(WorkerProcess):
                 width = 700
                 height = 400
 
-                img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                #img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
+                #img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 #img = img[(int(height/1.8)):(height - 30), (int(width*0.2)):(width - (int(width*0.15)))]
                 #img = cv2.GaussianBlur(img, (5,1), 0)
                 #img1, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-                roiVertices = [
-                    (0, len(img)),
-                    (len(img[0]) / 2, 0),
-                    (len(img[0]), len(img))
-                ]
+                #roiVertices = [
+                #    (0, len(img)),
+                #    (len(img[0]) / 2, 0),
+                #    (len(img[0]), len(img))
+                #]
 
                 #img = cropRegion(img, np.array([roiVertices], np.int32),)
                  
