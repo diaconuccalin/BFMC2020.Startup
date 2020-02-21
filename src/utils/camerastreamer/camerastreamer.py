@@ -131,7 +131,7 @@ class CameraStreamer(WorkerProcess):
             img = cropRegion(img, np.array([roiVertices], np.int32),)
 
             return img
-            
+
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
 
@@ -139,7 +139,7 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, image = inP.recv()
 
-                image = processForLane(image)
+                #image = processForLane(image)
                  
                 result, image = cv2.imencode('.jpg', image, encode_param)
                 data   =  image.tobytes()
