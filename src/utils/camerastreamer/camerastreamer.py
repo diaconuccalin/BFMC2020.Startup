@@ -141,8 +141,12 @@ class CameraStreamer(WorkerProcess):
 
                 width = 700
                 height = 400
+
+                print(stamps)
+                print(img.shape)
                 result, img = cv2.imencode('.jpg', img, encode_param)
 
+                print(result)
                 print(img.shape)
                 
                 #img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
