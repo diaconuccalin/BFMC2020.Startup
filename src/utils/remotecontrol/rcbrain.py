@@ -56,7 +56,7 @@ class RcBrain:
         """It's an example to process the keyboard events and convert them to commands for the robot.
         """
 
-        self.speed = 20.0
+        self.speed = 25.0
         self.steerAngle = 0.0
 
         #----------------- CONSTANT VALUES --------------------
