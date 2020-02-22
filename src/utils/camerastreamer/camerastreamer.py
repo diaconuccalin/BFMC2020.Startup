@@ -148,7 +148,7 @@ class CameraStreamer(WorkerProcess):
                     return img
 
                 img = draw_lines(img, lines)
-                img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+                #img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
                 
                 #kernel = np.ones((2,2), np.uint8)
                 #img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
