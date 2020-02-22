@@ -110,6 +110,9 @@ class CameraStreamer(WorkerProcess):
         while True:
             try:
                 stamps, image = inP.recv()
+
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+                print(image.shape)
                  
                 result, image = cv2.imencode('.jpg', image, encode_param)
                 data   =  image.tobytes()
