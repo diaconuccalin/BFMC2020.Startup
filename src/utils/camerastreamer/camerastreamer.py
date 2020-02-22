@@ -145,14 +145,13 @@ class CameraStreamer(WorkerProcess):
                             cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)
 
                     # Merge the image with the lines onto the original.
-                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+                    line_img = cv2.cvtColor(line_img, cv2.COLOR_RGB2GRAY)
                     img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)
 
                     # Return the modified image.
                     return img
 
                 img = draw_lines(img, lines)
-                img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
                 
                 #kernel = np.ones((2,2), np.uint8)
                 #img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
