@@ -109,10 +109,35 @@ class CameraStreamer(WorkerProcess):
 
         while True:
             try:
+                height = 480
+                width = 640
+
                 stamps, image = inP.recv()
 
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
                 
+                img = img[(int(height/1.8)):(height - 30), (int(width*0.2)):(width - (int(width*0.15)))]
+
+                img = cv2.GaussianBlur(img, (5,1), 0)
+                img1, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+
+                def cropRegion(img, vertices):
+                    mask = np.zeros_like(img)
+                    channelCount = 1
+                    matchMaskColor = (255,) * channelCount
+                    cv2.fillPoly(mask, vertices, matchMaskColor)
+                    maskedImage = cv2.bitwise_and(img, mask)
+                    return maskedImage
+    
+                roiVertices = [
+                    (0, len(img)),
+                    (len(img[0]) / 2, 0),
+                    (len(img[0]), len(img))
+                ]
+
+                img = cropRegion(img, np.array([roiVertices], np.int32),)
+
                  
                 result, image = cv2.imencode('.jpg', image, encode_param)
                 data   =  image.tobytes()
