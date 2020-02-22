@@ -138,10 +138,13 @@ class CameraStreamer(WorkerProcess):
                 if(self.count < 30):
                     self.count = self.count + 1
                     self.summ = self.summ + total
+                    print("test1")
                 elif(self.count == 30):
                     self.avg = self.summ / 30
+                    print("test2")
                 else:
                     self.avg = (self.avg * 29 + total) / 30
+                    print("test3")
 
                 print(self.avg)
 
