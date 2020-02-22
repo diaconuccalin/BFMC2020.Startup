@@ -118,8 +118,37 @@ class CameraStreamer(WorkerProcess):
                 
                 img = img[(int(height/1.8)):height, 0:width]
 
-                img = cv2.GaussianBlur(img, (9,9), 0)
+                img = cv2.GaussianBlur(img, (7,7), 0)
                 img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
+
+                lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
+
+                def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
+                    # If there are no lines to draw, exit.
+                    if lines is None:
+                        return
+                    # Make a copy of the original image.
+                    img = np.copy(img)
+                    # Create a blank image that matches the original in size.
+                    line_img = np.zeros(
+                        (
+                            img.shape[0],
+                            img.shape[1],
+                            3
+                        ),
+                        dtype=np.uint8,
+                    )
+                    # Loop over all lines and draw them on the blank image.
+                    for line in lines:
+                        for x1, y1, x2, y2 in line:
+                            cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)
+                    # Merge the image with the lines onto the original.
+                    img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)
+                    # Return the modified image.
+                    return img
+
+                img = draw_lines(img, lines)
+                img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
                 
                 #kernel = np.ones((2,2), np.uint8)
                 #img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
