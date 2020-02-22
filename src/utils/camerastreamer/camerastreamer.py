@@ -38,6 +38,10 @@ import math
 from src.utils.templates.workerprocess import WorkerProcess
 
 class CameraStreamer(WorkerProcess):
+    count = 0.0
+    summ = 0.0
+    avg = 0.0
+
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Process used for sending images over the network. UDP protocol is used. The
@@ -126,9 +130,20 @@ class CameraStreamer(WorkerProcess):
                 total = 0.0
                 for line in lines:
                     for x1, y1, x2, y2 in line:
-                        total = total + (x2 - x1) / (y2 - y1)
+                        if y2 == y1:
+                            total = total + 10000
+                        else:
+                            total = total + (x2 - x1) / (y2 - y1)
 
-                print(total)
+                if(self.count < 30):
+                    self.count = self.count + 1
+                    self.summ = self.summ + total
+                elif(self.count == 30):
+                    self.avg = self.summ / 30
+                else:
+                    self.avg = (self.avg * 29 + total) / 30
+
+                print(self.avg)
 
                 def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
                     # If there are no lines to draw, exit.
