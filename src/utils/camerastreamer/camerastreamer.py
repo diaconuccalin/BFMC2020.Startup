@@ -123,6 +123,13 @@ class CameraStreamer(WorkerProcess):
 
                 lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
 
+                total = 0.0
+                for line in lines:
+                    for x1, y1, x2, y2 in line:
+                        total = total + (x2 - x1) / (y2 - y1)
+
+                print(total)
+
                 def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
                     # If there are no lines to draw, exit.
                     if lines is None:
