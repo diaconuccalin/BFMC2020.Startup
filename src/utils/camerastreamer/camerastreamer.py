@@ -136,7 +136,7 @@ class CameraStreamer(WorkerProcess):
                     (len(img[0]), len(img))
                 ]
 
-                img = cropRegion(img, np.array([roiVertices], np.int32),)
+                #img = cropRegion(img, np.array([roiVertices], np.int32),)
 
                  
                 result, img = cv2.imencode('.jpg', img, encode_param)
