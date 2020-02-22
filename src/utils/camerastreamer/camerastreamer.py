@@ -119,7 +119,7 @@ class CameraStreamer(WorkerProcess):
                 img = img[(int(height/1.8)):height, 0:width]
 
                 img = cv2.GaussianBlur(img, (5,3), 0)
-                img1, img = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+                img1, img = cv2.threshold(img, 0, 100, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
 
                 def cropRegion(img, vertices):
