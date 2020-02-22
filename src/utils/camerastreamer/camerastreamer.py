@@ -123,8 +123,8 @@ class CameraStreamer(WorkerProcess):
                 
                 kernel = np.ones((2,2), np.uint8)
                 img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-                kernel = np.ones((13,13), np.uint8)
-                img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+                #kernel = np.ones((13,13), np.uint8)
+                #img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
                 #img1, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
 
