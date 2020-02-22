@@ -107,7 +107,7 @@ class CameraReceiver(WorkerProcess):
                 image = np.frombuffer(bts, np.uint8)
                 image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)
                 image = np.reshape(image, self.imgSize)
-                #image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
                 # ----------------------- show images -------------------
                 cv2.imshow('Image', image) 
