@@ -119,7 +119,10 @@ class CameraStreamer(WorkerProcess):
                 img = img[(int(height/1.8)):height, 0:width]
 
                 img = cv2.GaussianBlur(img, (5,5), 0)
-                img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, -10)
+                img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, -8)
+                
+                kernel = np.ones((1,2), np.uint8)
+                img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
                 #img1, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
 
