@@ -97,6 +97,49 @@ class CameraStreamer(WorkerProcess):
         except KeyboardInterrupt:
             self._blocker.set()
             pass
+
+    def laneKeeping(self, img):
+        height = 480
+        width = 640
+
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        img = img[(int(height/1.8)):height, 0:width]
+        img = cv2.GaussianBlur(img, (7,7), 0)
+        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
+
+        total = 0.0
+        lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
+
+        for line in lines:
+            for x1, y1, x2, y2 in line:
+                if y2 == y1:
+                    total = total + 10000
+                else:
+                    total = total + (x2 - x1) / (y2 - y1)
+
+        if(self.count < 30):
+            self.count = self.count + 1
+            self.summ = self.summ + total
+        elif(self.count == 30):
+            self.avg = self.summ / 30
+            self.count = self.count + 1
+        else:
+            self.avg = (self.avg * 29 + total) / 30
+
+        def mapToRange(val, inMin, inMax, outMin, outMax):
+            inMinAux = inMin
+
+            inMax = inMax + inMin
+            inMin = 0
+
+            outMaxAux = outMax + outMin
+            outMinAux = 0
+
+            return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
+
+        mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
+
+
         
     # ===================================== SEND THREAD ==================================
     def _send_thread(self, inP):
@@ -113,94 +156,10 @@ class CameraStreamer(WorkerProcess):
 
         while True:
             try:
-                height = 480
-                width = 640
-
                 stamps, img = inP.recv()
 
-                img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-                
-                img = img[(int(height/1.8)):height, 0:width]
+                print(laneKeeping(img))
 
-                img = cv2.GaussianBlur(img, (7,7), 0)
-                img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
-
-                lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
-
-                total = 0.0
-                for line in lines:
-                    for x1, y1, x2, y2 in line:
-                        if y2 == y1:
-                            total = total + 10000
-                        else:
-                            total = total + (x2 - x1) / (y2 - y1)
-
-                if(self.count < 30):
-                    self.count = self.count + 1
-                    self.summ = self.summ + total
-                elif(self.count == 30):
-                    self.avg = self.summ / 30
-                    self.count = self.count + 1
-                else:
-                    self.avg = (self.avg * 29 + total) / 30
-
-                print(self.avg)
-
-                def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
-                    # If there are no lines to draw, exit.
-                    if lines is None:
-                        return
-                    # Make a copy of the original image.
-                    img = np.copy(img)
-                    # Create a blank image that matches the original in size.
-                    line_img = np.zeros(
-                        (
-                            img.shape[0],
-                            img.shape[1],
-                            3
-                        ),
-                        dtype=np.uint8,
-                    )
-
-                    # Loop over all lines and draw them on the blank image.
-                    for line in lines:
-                        for x1, y1, x2, y2 in line:
-                            cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)
-
-                    # Merge the image with the lines onto the original.
-                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-                    img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)
-
-                    # Return the modified image.
-                    return img
-
-                img = draw_lines(img, lines)
-                
-                #kernel = np.ones((2,2), np.uint8)
-                #img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-                #kernel = np.ones((7,7), np.uint8)
-                #img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-                #img1, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-
-
-                def cropRegion(img, vertices):
-                    mask = np.zeros_like(img)
-                    channelCount = 1
-                    matchMaskColor = (255,) * channelCount
-                    cv2.fillPoly(mask, vertices, matchMaskColor)
-                    maskedImage = cv2.bitwise_and(img, mask)
-                    return maskedImage
-    
-                roiVertices = [
-                    (0, len(img)),
-                    (len(img[0]) / 2, 0),
-                    (len(img[0]), len(img))
-                ]
-
-                #img = cropRegion(img, np.array([roiVertices], np.int32),)
-
-                 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
                 size   =  len(data)
