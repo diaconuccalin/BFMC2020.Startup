@@ -154,7 +154,7 @@ class CameraStreamer(WorkerProcess):
 
             #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
             #return mappedVal
-            return self.avg
+            return self.avg, img
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -163,7 +163,8 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                print(laneKeeping(img))
+                val, img = laneKeeping(img)
+                print(val)
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
