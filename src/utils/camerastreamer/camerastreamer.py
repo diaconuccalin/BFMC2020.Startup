@@ -105,6 +105,7 @@ class CameraStreamer(WorkerProcess):
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         img = img[(int(height/1.8)):height, 0:width]
         img = cv2.GaussianBlur(img, (7,7), 0)
+
         img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
 
         total = 0.0
@@ -138,6 +139,7 @@ class CameraStreamer(WorkerProcess):
             return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
 
         mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
+        return mappedVal
 
 
         
@@ -158,7 +160,7 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                print(laneKeeping(img))
+                print(laneKeeping(self, img))
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
