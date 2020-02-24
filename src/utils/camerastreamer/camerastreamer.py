@@ -98,50 +98,6 @@ class CameraStreamer(WorkerProcess):
             self._blocker.set()
             pass
 
-    def laneKeeping(self, img):
-        height = 480
-        width = 640
-
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        img = img[(int(height/1.8)):height, 0:width]
-        img = cv2.GaussianBlur(img, (7,7), 0)
-
-        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
-
-        total = 0.0
-        lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
-
-        for line in lines:
-            for x1, y1, x2, y2 in line:
-                if y2 == y1:
-                    total = total + 10000
-                else:
-                    total = total + (x2 - x1) / (y2 - y1)
-
-        if(self.count < 30):
-            self.count = self.count + 1
-            self.summ = self.summ + total
-        elif(self.count == 30):
-            self.avg = self.summ / 30
-            self.count = self.count + 1
-        else:
-            self.avg = (self.avg * 29 + total) / 30
-
-        def mapToRange(val, inMin, inMax, outMin, outMax):
-            inMinAux = inMin
-
-            inMax = inMax + inMin
-            inMin = 0
-
-            outMaxAux = outMax + outMin
-            outMinAux = 0
-
-            return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
-
-        mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
-        return mappedVal
-
-
         
     # ===================================== SEND THREAD ==================================
     def _send_thread(self, inP):
@@ -152,6 +108,49 @@ class CameraStreamer(WorkerProcess):
         inP : Pipe
             Input pipe to read the frames from other process. 
         """
+
+        def laneKeeping(img):
+            height = 480
+            width = 640
+
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+            img = img[(int(height/1.8)):height, 0:width]
+            img = cv2.GaussianBlur(img, (7,7), 0)
+
+            img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
+
+            total = 0.0
+            lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
+
+            for line in lines:
+                for x1, y1, x2, y2 in line:
+                    if y2 == y1:
+                        total = total + 10000
+                    else:
+                        total = total + (x2 - x1) / (y2 - y1)
+
+            if(self.count < 30):
+                self.count = self.count + 1
+                self.summ = self.summ + total
+            elif(self.count == 30):
+                self.avg = self.summ / 30
+                self.count = self.count + 1
+            else:
+                self.avg = (self.avg * 29 + total) / 30
+
+            def mapToRange(val, inMin, inMax, outMin, outMax):
+                inMinAux = inMin
+
+                inMax = inMax + inMin
+                inMin = 0
+
+                outMaxAux = outMax + outMin
+                outMinAux = 0
+
+                return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
+
+            mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
+            return mappedVal
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
