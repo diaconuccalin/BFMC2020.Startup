@@ -147,6 +147,9 @@ class CameraStreamer(WorkerProcess):
                 outMaxAux = outMax + outMin
                 outMinAux = 0
 
+                if ((inMax - inMin)) * (val - inMinAux) != 0 :
+                    return 0
+
                 return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
 
             mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
