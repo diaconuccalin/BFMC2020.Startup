@@ -159,7 +159,7 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                print(laneKeeping(self, img))
+                print(laneKeeping(img))
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
