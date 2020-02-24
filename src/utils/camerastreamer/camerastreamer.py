@@ -154,7 +154,7 @@ class CameraStreamer(WorkerProcess):
 
             #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
             #return mappedVal
-            return self.avg, img
+            return self.avg, img, lines
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -163,7 +163,37 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                val, img = laneKeeping(img)
+                val, img, lines = laneKeeping(img)
+
+                def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
+                    # If there are no lines to draw, exit.	
+                    if lines is None:	
+                        return	
+                    # Make a copy of the original image.	
+                    img = np.copy(img)	
+                    # Create a blank image that matches the original in size.	
+                    line_img = np.zeros(	
+                        (	
+                            img.shape[0],	
+                            img.shape[1],	
+                            3	
+                        ),	
+                        dtype=np.uint8,	
+                    )	
+
+                    # Loop over all lines and draw them on the blank image.	
+                    for line in lines:	
+                        for x1, y1, x2, y2 in line:	
+                            cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)	
+
+                    # Merge the image with the lines onto the original.	
+                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)	
+                    img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)	
+
+                    # Return the modified image.	
+                    return img	
+
+                img = draw_lines(img, lines)
                 print(val)
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
