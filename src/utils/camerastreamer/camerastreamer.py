@@ -152,8 +152,9 @@ class CameraStreamer(WorkerProcess):
 
                 return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
 
-            mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
-            return mappedVal
+            #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
+            #return mappedVal
+            return self.avg
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
