@@ -154,7 +154,7 @@ class CameraStreamer(WorkerProcess):
 
             #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
             #return mappedVal
-            return self.avg, img, lines
+            return total, img, lines
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
