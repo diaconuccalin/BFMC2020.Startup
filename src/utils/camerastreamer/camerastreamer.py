@@ -111,7 +111,7 @@ class CameraStreamer(WorkerProcess):
 
         def laneKeeping(img):
             height = 480
-            width = 640
+            width = 800
 
             img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             #img = img[(int(height/1.8)):height, 0:width]
