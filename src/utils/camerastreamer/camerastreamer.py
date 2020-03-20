@@ -163,7 +163,7 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                val, img, lines = laneKeeping(img)
+                #val, img, lines = laneKeeping(img)
 
                 def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
                     # If there are no lines to draw, exit.	
@@ -193,8 +193,8 @@ class CameraStreamer(WorkerProcess):
                     # Return the modified image.	
                     return img	
 
-                img = draw_lines(img, lines)
-                print(val)
+                #img = draw_lines(img, lines)
+                #print(val)
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
