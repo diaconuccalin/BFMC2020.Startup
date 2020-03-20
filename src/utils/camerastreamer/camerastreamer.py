@@ -155,6 +155,14 @@ class CameraStreamer(WorkerProcess):
             #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
             #return mappedVal
             return total, img, lines
+
+        def signDetection(img):
+            height = 480
+            width = 640
+
+            img = img[0:(int)(height/2), (int)(width/2):width]
+            return img
+
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -164,6 +172,7 @@ class CameraStreamer(WorkerProcess):
                 stamps, img = inP.recv()
 
                 #val, img, lines = laneKeeping(img)
+                img = signDetection(img)
 
                 def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
                     # If there are no lines to draw, exit.	
