@@ -208,7 +208,7 @@ class CameraStreamer(WorkerProcess):
                 f = open("log.txt", "a")
 
                 now = datetime.datetime.now()
-                f.write(str(now.strftime("%\nY-%m-%d %H:%M:%S  -  ")))
+                f.write(str(now.strftime("\n %Y-%m-%d %H:%M:%S  -  ")))
 
                 val = str(val)
                 f.write(val)
