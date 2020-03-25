@@ -206,10 +206,11 @@ class CameraStreamer(WorkerProcess):
                 img = draw_lines(img, lines)
 
                 f = open("log.txt", "a")
+                val = str(val)
                 f.write(val)
 
                 now = datetime.datetime.now()
-                f.write(now.strftime("%Y-%m-%d %H:%M:%S"))
+                f.write(str(now.strftime("%Y-%m-%d %H:%M:%S")))
                 f.close()
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
