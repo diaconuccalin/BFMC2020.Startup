@@ -29,6 +29,7 @@ import socket
 import struct
 import time
 import numpy as np
+import datetime
 from multiprocessing import Process
 from threading import Thread
 
@@ -171,8 +172,8 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                #val, img, lines = laneKeeping(img)
-                img = signDetection(img)
+                val, img, lines = laneKeeping(img)
+                #img = signDetection(img)
 
                 def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
                     # If there are no lines to draw, exit.	
@@ -202,8 +203,14 @@ class CameraStreamer(WorkerProcess):
                     # Return the modified image.	
                     return img	
 
-                #img = draw_lines(img, lines)
-                #print(val)
+                img = draw_lines(img, lines)
+
+                f = open("log.txt", "a")
+                f.write(val)
+
+                now = datetime.datetime.now()
+                f.write(now.strftime("%Y-%m-%d %H:%M:%S"))
+                f.close()
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
