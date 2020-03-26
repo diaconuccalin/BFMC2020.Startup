@@ -200,7 +200,7 @@ class CameraStreamer(WorkerProcess):
                     #if h[i, j] > 20 and h[i, j] < 24:   # Yellow
                     #    y[i, j] = 255
 
-            img = h
+            np.concatenate((img, h))
             return img
 
         
