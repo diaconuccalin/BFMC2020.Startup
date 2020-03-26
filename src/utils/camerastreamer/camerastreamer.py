@@ -191,16 +191,16 @@ class CameraStreamer(WorkerProcess):
             y = np.zeros((height, width), np.uint8)
 
             # Fill masks
-            for i in range(height):
-                for j in range(width):
-                    if h[i, j] < 4:                     # Red
-                        r[i, j] = 255
-                    if h[i, j] > 108 and h[i, j] < 112: # Blue
-                        b[i, j] = 255
-                    if h[i, j] > 20 and h[i, j] < 24:   # Yellow
-                        y[i, j] = 255
+            #for i in range(height):
+                #for j in range(width):
+                    #if h[i, j] < 4:                     # Red
+                    #    r[i, j] = 255
+                    #if h[i, j] > 108 and h[i, j] < 112: # Blue
+                    #    b[i, j] = 255
+                    #if h[i, j] > 20 and h[i, j] < 24:   # Yellow
+                    #    y[i, j] = 255
 
-            img = r
+            img = h
             return img
 
         
@@ -225,7 +225,6 @@ class CameraStreamer(WorkerProcess):
                 #f.close()
 
                 img = signDetection(img)
-                
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
