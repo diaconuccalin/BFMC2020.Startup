@@ -75,7 +75,7 @@ class CameraPublisher(ThreadWithStop):
         self.camera = PiCamera()
 
         # camera settings
-        self.camera.resolution      =   (1640,1232)
+        self.camera.resolution      =   (640,480)
         self.camera.framerate       =   20
 
         self.camera.brightness      =   50  # default
