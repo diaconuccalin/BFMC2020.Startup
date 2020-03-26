@@ -191,19 +191,19 @@ class CameraStreamer(WorkerProcess):
             y = np.zeros((height, width), np.uint8)
 
             # Fill masks
-            #for i in range(height):
-                #for j in range(width):
-                    #if h[i, j] < 4:                     # Red
-                    #    r[i, j] = 255
+            for i in range(height):
+                for j in range(width):
+                    if h[i, j] > 119 and h[i, j] < 124: # Red
+                        r[i, j] = 255
                     #if h[i, j] > 108 and h[i, j] < 112: # Blue
                     #    b[i, j] = 255
                     #if h[i, j] > 20 and h[i, j] < 24:   # Yellow
                     #    y[i, j] = 255
 
             hue = np.zeros((height, width, 3), np.uint8)
-            hue[:, :, 0] = h
-            hue[:, :, 1] = h
-            hue[:, :, 2] = h
+            hue[:, :, 0] = r
+            hue[:, :, 1] = r
+            hue[:, :, 2] = r
             img = np.concatenate((img, hue), axis = 1)
             return img
 
