@@ -187,6 +187,7 @@ class CameraStreamer(WorkerProcess):
 
             # Create empty masks for red, blue, yellow
             r1 = cv2.threshold(h, 119, 255, cv2.THRESH_BINARY)
+            print(r1)
             h = cv2.bitwise_not(h)
             r2 = cv2.threshold(h, 131, 255, cv2.THRESH_BINARY)
             #r = cv2.bitwise_and(r1, r2)
