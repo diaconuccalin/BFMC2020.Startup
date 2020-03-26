@@ -139,29 +139,68 @@ class CameraStreamer(WorkerProcess):
             else:
                 self.avg = (self.avg * 29 + total) / 30
 
-            def mapToRange(val, inMin, inMax, outMin, outMax):
-                inMinAux = inMin
-
-                inMax = inMax + inMin
-                inMin = 0
-
-                outMaxAux = outMax + outMin
-                outMinAux = 0
-
-                if ((inMax - inMin)) * (val - inMinAux) != 0 :
-                    return 0
-
-                return inMin + ((outMaxAux - outMinAux) / (inMax - inMin)) * (val - inMinAux)
-
-            #mappedVal = mapToRange(self.avg, -100, 100, -1, 1)
-            #return mappedVal
             return total, img, lines
 
-        def signDetection(img):
-            height = 480
-            width = 640
 
+        def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
+                # If there are no lines to draw, exit.	
+                if lines is None:	
+                    return	
+                # Make a copy of the original image.	
+                img = np.copy(img)	
+                # Create a blank image that matches the original in size.	
+                line_img = np.zeros(	
+                    (	
+                        img.shape[0],	
+                        img.shape[1],	
+                        3	
+                    ),	
+                    dtype=np.uint8,	
+                )	
+
+                # Loop over all lines and draw them on the blank image.	
+                for line in lines:	
+                    for x1, y1, x2, y2 in line:	
+                        cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)	
+
+                # Merge the image with the lines onto the original.	
+                img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)	
+                img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)	
+
+                # Return the modified image.	
+                return img	
+
+        def signDetection(img):
+            # Crop top right corner
+            height = img.shape[0]
+            width = img.shape[1]
             img = img[0:(int)(height/2), (int)(width/2):width]
+
+            height = img.shape[0]
+            width = img.shape[1]
+
+            # Remove noise
+            img = cv2.GaussianBlur(img, (3, 3), 0)
+
+            # Obtain hue
+            h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+
+            # Create empty masks for red, blue, yellow
+            r = np.zeros((height, width), np.uint8)
+            b = np.zeros((height, width), np.uint8)
+            y = np.zeros((height, width), np.uint8)
+
+            # Fill masks
+            for i in range(height):
+                for j in range(width):
+                    if h[i, j] < 4:                     # Red
+                        r[i, j] = 255
+                    if h[i, j] > 108 and h[i, j] < 112: # Blue
+                        b[i, j] = 255
+                    if h[i, j] > 20 and h[i, j] < 24:   # Yellow
+                        y[i, j] = 255
+
+            img = r
             return img
 
         
@@ -172,48 +211,21 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                val, img, lines = laneKeeping(img)
-                #img = signDetection(img)
+                #val, img, lines = laneKeeping(img)
+                #img = draw_lines(img, lines)
 
-                def draw_lines(img, lines, color=[255, 0, 0], thickness=3):	
-                    # If there are no lines to draw, exit.	
-                    if lines is None:	
-                        return	
-                    # Make a copy of the original image.	
-                    img = np.copy(img)	
-                    # Create a blank image that matches the original in size.	
-                    line_img = np.zeros(	
-                        (	
-                            img.shape[0],	
-                            img.shape[1],	
-                            3	
-                        ),	
-                        dtype=np.uint8,	
-                    )	
+                #f = open("log.txt", "a")
 
-                    # Loop over all lines and draw them on the blank image.	
-                    for line in lines:	
-                        for x1, y1, x2, y2 in line:	
-                            cv2.line(line_img, (x1, y1), (x2, y2), color, thickness)	
+                #now = datetime.datetime.now()
+                #f.write(str(now.strftime("\n %Y-%m-%d %H:%M:%S  -  ")))
 
-                    # Merge the image with the lines onto the original.	
-                    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)	
-                    img = cv2.addWeighted(img, 0.8, line_img, 1.0, 0.0)	
+                #val = str(val)
+                #f.write(val)
 
-                    # Return the modified image.	
-                    return img	
+                #f.close()
 
-                img = draw_lines(img, lines)
-
-                f = open("log.txt", "a")
-
-                now = datetime.datetime.now()
-                f.write(str(now.strftime("\n %Y-%m-%d %H:%M:%S  -  ")))
-
-                val = str(val)
-                f.write(val)
-
-                f.close()
+                img = signDetection(img)
+                
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
