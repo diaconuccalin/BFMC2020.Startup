@@ -75,13 +75,14 @@ class CameraPublisher(ThreadWithStop):
         self.camera = PiCamera()
 
         # camera settings
-        self.camera.resolution      =   (1640,1232)
-        self.camera.framerate       =   15
+        self.camera.resolution      =   (640,480)
+        self.camera.framerate       =   20
 
         self.camera.brightness      =   50  # default
         self.camera.shutter_speed   =   0   # auto
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
+        self.cmaera.awb_mode        =   'shade'
         
 
         self.imgSize                =   (640, 480)    # the actual image size

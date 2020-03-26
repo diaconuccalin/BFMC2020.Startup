@@ -39,10 +39,6 @@ import math
 from src.utils.templates.workerprocess import WorkerProcess
 
 class CameraStreamer(WorkerProcess):
-    count = 0.0
-    summ = 0.0
-    avg = 0.0
-
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Process used for sending images over the network. UDP protocol is used. The
@@ -220,7 +216,7 @@ class CameraStreamer(WorkerProcess):
             b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
-            topRow = np.concatenate((img, r), axis = 1)
+            topRow = np.concatenate((h, r), axis = 1)
             bottomRow = np.concatenate((b, y), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
