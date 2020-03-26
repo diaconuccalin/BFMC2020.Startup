@@ -186,9 +186,9 @@ class CameraStreamer(WorkerProcess):
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
 
             # Create empty masks for red, blue, yellow
-            r1 = cv2.threshold(h, 119, 255)
+            r1 = cv2.threshold(h, 119, 255, cv2.THRESH_BINARY)
             h = cv2.bitwise_not(h)
-            r1 = cv2.threshold(h, 131, 255)
+            r2 = cv2.threshold(h, 131, 255, cv2.THRESH_BINARY)
             r = cv2.bitwise_and(r1, r2)
             
             b = np.zeros((height, width), np.uint8)
