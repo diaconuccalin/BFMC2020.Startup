@@ -200,7 +200,8 @@ class CameraStreamer(WorkerProcess):
                     #if h[i, j] > 20 and h[i, j] < 24:   # Yellow
                     #    y[i, j] = 255
 
-            np.concatenate((img, h))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            img = np.concatenate((img, h), axis = 1)
             return img
 
         
