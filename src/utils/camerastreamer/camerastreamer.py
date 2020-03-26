@@ -204,7 +204,7 @@ class CameraStreamer(WorkerProcess):
             hue[:, :, 0] = h
             hue[:, :, 1] = h
             hue[:, :, 2] = h
-            img = np.concatenate((img, h), axis = 1)
+            img = np.concatenate((img, hue), axis = 1)
             return img
 
         
