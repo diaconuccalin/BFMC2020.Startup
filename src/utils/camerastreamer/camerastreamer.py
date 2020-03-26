@@ -181,6 +181,8 @@ class CameraStreamer(WorkerProcess):
             return img
 
         def signDetection(img):
+            # add color calibration (maybe stop auto wb)
+            # check other way to find contours in images separated by color
             original = img.copy()
 
             # Crop top right corner
@@ -223,6 +225,7 @@ class CameraStreamer(WorkerProcess):
             topRow = np.concatenate((img, r), axis = 1)
             bottomRow = np.concatenate((b, y), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
+
             return img
 
         
