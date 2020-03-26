@@ -170,7 +170,19 @@ class CameraStreamer(WorkerProcess):
                 # Return the modified image.	
                 return img	
 
+        def prepareMask(img):
+            kernel = np.ones((3, 3), np.uint8)
+            img = cv2.erode(img, kernel, iterations=1)
+            img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+
+            kernel = np.ones((5, 5), np.uint8)
+            img = cv2.dilate(img, kernel, iterations = 1)
+
+            return img
+
         def signDetection(img):
+            original = img.copy()
+
             # Crop top right corner
             height = img.shape[0]
             width = img.shape[1]
@@ -180,7 +192,7 @@ class CameraStreamer(WorkerProcess):
             width = img.shape[1]
 
             # Remove noise
-            img = cv2.GaussianBlur(img, (3, 3), 0)
+            img = cv2.GaussianBlur(img, (5, 5), 0)
 
             # Obtain hue
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
@@ -197,6 +209,11 @@ class CameraStreamer(WorkerProcess):
             
             r = cv2.bitwise_and(r1, r2)
             y = cv2.bitwise_and(y1, y2)
+
+            # Morphologies on masks
+            r = prepareMask(r)
+            b = prepareMask(b)
+            y = prepareMask(y)
 
             # To display
             r = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
