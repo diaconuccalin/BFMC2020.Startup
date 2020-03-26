@@ -186,33 +186,26 @@ class CameraStreamer(WorkerProcess):
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
 
             # Create masks for red, blue, yellow
-            ret, r1 = cv2.threshold(h, 119, 255, cv2.THRESH_BINARY)
-            ret, b1 = cv2.threshold(h, 119, 255, cv2.THRESH_BINARY)
-            ret, y1 = cv2.threshold(h, 119, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 112, 255, cv2.THRESH_BINARY)
+            ret, y1 = cv2.threshold(h, 107, 255, cv2.THRESH_BINARY)
 
             h = cv2.bitwise_not(h)
+
             ret, r2 = cv2.threshold(h, 131, 255, cv2.THRESH_BINARY)
-            r = cv2.bitwise_and(r1, r2)
+            ret, b = cv2.threshold(h, 250, 255, cv2.THRESH_BINARY)
+            ret, y2 = cv2.threshold(h, 145, 255, cv2.THRESH_BINARY)
             
-            b = np.zeros((height, width), np.uint8)
-            y = np.zeros((height, width), np.uint8)
+            r = cv2.bitwise_and(r1, r2)
+            y = cv2.bitwise_and(y1, y2)
 
-            # Fill masks
-            #for i in range(height):
-                #for j in range(width):
+            # To display
+            r = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
+            b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
+            y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
-                    #if h[i, j] > 119 and h[i, j] < 124: # Red
-                        #r[i, j] = 255
-                    #if h[i, j] > 108 and h[i, j] < 112: # Blue
-                    #    b[i, j] = 255
-                    #if h[i, j] > 20 and h[i, j] < 24:   # Yellow
-                    #    y[i, j] = 255
-
-            hue = np.zeros((height, width, 3), np.uint8)
-            hue[:, :, 0] = h
-            hue[:, :, 1] = h
-            hue[:, :, 2] = h
-            img = np.concatenate((img, hue), axis = 1)
+            topRow = np.concatenate((img, r), axis = 1)
+            bottomRow = np.concatenate((b, y), axis = 1)
+            img = np.concatenate((topRow, bottomRow), axis = 0)
             return img
 
         
