@@ -57,6 +57,8 @@ class CameraStreamer(WorkerProcess):
 
         self.serverIp   =  '192.168.0.199' # PC ip
         self.port       =  2244            # com port
+
+        self.firstTime = True
         
     # ===================================== RUN ==========================================
     def run(self):
@@ -243,6 +245,10 @@ class CameraStreamer(WorkerProcess):
                 #f.write(val)
 
                 #f.close()
+            if self.firstTime :
+                time.sleep(3)
+                cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', img)
+                self.firstTime = False
 
                 img = signDetection(img)
 
