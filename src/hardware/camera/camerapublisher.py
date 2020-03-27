@@ -90,11 +90,6 @@ class CameraPublisher(ThreadWithStop):
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
-    #========================== CALIBRATE WHITE BALANCE ==================================
-    def calibrateWb(self):
-
-        self.camera._set_awb_gains((1.7, 1.7))
-
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
         stamp = time.gmtime()
