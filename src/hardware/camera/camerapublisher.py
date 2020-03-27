@@ -90,9 +90,14 @@ class CameraPublisher(ThreadWithStop):
 
         self.calibrateWb()
 
-    #====================================== CALIBRATE WHITE BALANCE =======================
+    #========================== CALIBRATE WHITE BALANCE ==================================
     def calibrateWb(self):
         from picamera import PiCamera
+
+        self.camera.start_preview()
+        time.sleep(5)
+        self.camera.capture('/home/foo.jpg')
+        self.camera.stop_preview()
 
         self.camera._set_awb_gains((1.7, 1.7))
 
