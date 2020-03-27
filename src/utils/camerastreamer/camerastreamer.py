@@ -225,6 +225,15 @@ class CameraStreamer(WorkerProcess):
 
             return img
 
+        def calibrateWB(image):
+            img = image.copy()
+
+            height = img.shape[0]
+            width = img.shape[1]
+
+            img = img[(int(height/2)):(int(0.9*height)), (int(0.4*width)):(int(0.6*width))]
+            cv2.imwrite("foo2.jpg", img)
+
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -247,7 +256,7 @@ class CameraStreamer(WorkerProcess):
                 #f.close()
 
                 if(self.firstTime):
-                    cv2.imwrite("foo2.jpg", img)
+                    calibrateWB(img)
                     self.firstTime = False
 
                 img = signDetection(img)
