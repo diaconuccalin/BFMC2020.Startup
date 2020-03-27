@@ -251,10 +251,10 @@ class CameraStreamer(WorkerProcess):
                 #    cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', img)
                 #    self.firstTime = False
 
-                if (self.firstTime == True) :
-                    self.firstTime = False
-                    time.sleep(3)
-                    cv2.imwrite(img, '/home/pi/BFMC2020.Startup/foo.jpg')
+                #if (self.firstTime == True) :
+                #    self.firstTime = False
+                #    time.sleep(3)
+                #    cv2.imwrite(img, '/home/pi/BFMC2020.Startup/foo.jpg')
 
                 img = signDetection(img)
 
