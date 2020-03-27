@@ -120,11 +120,15 @@ class CameraPublisher(ThreadWithStop):
                 blues += b[i, j]
                 greens += g[i, j]
 
+        print(reds)
+        print(greens)
+        print(blues)
+        
         # Compute and apply gains
         reds = greens / reds
         blues = greens / blues
 
-        self.camera.awb_gains = (blues, reds)
+        self.camera.awb_gains = (reds, blues)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
