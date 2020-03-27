@@ -94,7 +94,7 @@ class CameraPublisher(ThreadWithStop):
     def calibrateWb(self):
         from picamera import PiCamera
 
-        self.camera._set_awb_gains((1.7, 1.0))
+        self.camera._set_awb_gains((1.7, 1.7))
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
