@@ -41,7 +41,7 @@ from src.utils.templates.threadwithstop import ThreadWithStop
 
 #================================ CAMERA PROCESS =========================================
 class CameraPublisher(ThreadWithStop):
-    
+
     #================================ CAMERA =============================================
     def __init__(self, outPs):
         """The purpose of this thread is to send the camera images. It is able to record
@@ -52,6 +52,8 @@ class CameraPublisher(ThreadWithStop):
         outPs : list(Pipes)
             the list of pipes were the images will be sent
         """
+        self.firstTime = True
+
         super(CameraPublisher,self).__init__()
         self.daemon = True
 
@@ -88,14 +90,8 @@ class CameraPublisher(ThreadWithStop):
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
-        self.camera.start_preview()
-        time.sleep(5)
-        self.camera.capture('/home/pi/BFMC2020.Startup/foo.jpg')
-        self.camera.stop_preview()
-
     #========================== CALIBRATE WHITE BALANCE ==================================
     def calibrateWb(self):
-        from picamera import PiCamera
 
         self.camera._set_awb_gains((1.7, 1.7))
 
@@ -131,7 +127,6 @@ class CameraPublisher(ThreadWithStop):
         """Stream function that actually published the frames into the pipes. Certain 
         processing(reshape) is done to the image format. 
         """
-        i = 0
 
         while self._running:
             
@@ -142,6 +137,11 @@ class CameraPublisher(ThreadWithStop):
             # read and reshape from bytes to np.array
             data  = np.frombuffer(data, dtype=np.uint8)
             data  = np.reshape(data, (480, 640, 3))
+
+            if(self.firstTime)
+                time.sleep(3)
+                cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', data)
+
             stamp = time.time()
 
             # output image and time stamp
