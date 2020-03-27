@@ -231,7 +231,7 @@ class CameraStreamer(WorkerProcess):
             height = img.shape[0]
             width = img.shape[1]
 
-            img = img[(int(height/2)):(int(0.9*height)), (int(0.4*width)):(int(0.6*width))]
+            img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
             cv2.imwrite("foo2.jpg", img)
 
         
