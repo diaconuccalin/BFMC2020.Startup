@@ -247,7 +247,7 @@ class CameraStreamer(WorkerProcess):
                 #f.close()
 
                 if(self.firstTime):
-                    cv2.imwrite(img, "foo2.jpg")
+                    cv2.imwrite("foo2.jpg", img)
                     self.firstTime = False
 
                 img = signDetection(img)
