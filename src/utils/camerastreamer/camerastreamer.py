@@ -81,6 +81,8 @@ class CameraStreamer(WorkerProcess):
         """
         self.client_socket = socket.socket()
         self.connection = None
+
+        self.firstTime = True
         # Trying repeatedly to connect the camera receiver.
         try:
             while self.connection is None and not self._blocker.is_set():
@@ -243,6 +245,10 @@ class CameraStreamer(WorkerProcess):
                 #f.write(val)
 
                 #f.close()
+
+                if(self.firstTime):
+                    print("TEST\n")
+                    self.firstTime = False
 
                 img = signDetection(img)
 
