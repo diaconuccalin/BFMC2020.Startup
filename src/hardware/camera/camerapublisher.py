@@ -94,6 +94,7 @@ class CameraPublisher(ThreadWithStop):
 
         # Obtain sample image
         time.sleep(5)
+        self.camera.awb_gains = (1.0, 1.0)
 
         img = np.zeros((480, 640, 3), np.uint8)
         self.camera.capture(img, format = 'rgb')
