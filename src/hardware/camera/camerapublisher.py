@@ -83,7 +83,7 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
         self.camera.awb_mode        =   'off'
-        self.camera.awb_gains       =   (2.0, 2.0)
+        self.camera.awb_gains       =   (1.0, 1.0)
         
 
         self.imgSize                =   (640, 480)    # the actual image size
@@ -110,23 +110,17 @@ class CameraPublisher(ThreadWithStop):
         # Compute rgb levels in ROI
         reds = 0.0
         blues = 0.0
-        greens = 0.0
 
         r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
         for i in range(height):
             for j in range(width):
-                reds += r[i, j]
-                blues += b[i, j]
-                greens += g[i, j]
-
-        print(reds)
-        print(greens)
-        print(blues)
+                reds += g[i, j] / r[i, j]
+                blues += g[i, j] / b[i, j]
 
         # Compute and apply gains
-        reds = greens / reds
-        blues = greens / blues
+        reds /= (width * height)
+        blues /= (width * height)
 
         print(reds)
         print(blues)
