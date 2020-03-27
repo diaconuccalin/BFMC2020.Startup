@@ -89,6 +89,7 @@ class CameraPublisher(ThreadWithStop):
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
+        img = np.zeros((480, 640, 3), np.uint8)
         time.sleep(5)
         self.camera.capture(img, format = 'rgb')
         cv2.imwrite("foo3.jpg", img)

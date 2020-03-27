@@ -277,9 +277,9 @@ class CameraStreamer(WorkerProcess):
 
                 #f.close()
 
-                if(self.firstTime):
+                #if(self.firstTime):
                     #calibrateWB(img)
-                    self.firstTime = False
+                    #self.firstTime = False
 
                 img = signDetection(img)
 
