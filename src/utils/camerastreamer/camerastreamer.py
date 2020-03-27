@@ -246,6 +246,10 @@ class CameraStreamer(WorkerProcess):
                 #f.write(val)
 
                 #f.close()
+                #if self.firstTime :
+                #    time.sleep(3)
+                #    cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', img)
+                #    self.firstTime = False
 
                 if (self.firstTime == True) :
                     firstTime = False
