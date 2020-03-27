@@ -229,30 +229,30 @@ class CameraStreamer(WorkerProcess):
             from picamera import PiCamera
             camera = PiCamera()
 
-            img = image.copy()
+#            img = image.copy()
 
-            height = img.shape[0]
-            width = img.shape[1]
+#            height = img.shape[0]
+#            width = img.shape[1]
 
-            img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+#            img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
 
-            height = img.shape[0]
-            width = img.shape[1]
+#            height = img.shape[0]
+#            width = img.shape[1]
 
-            reds = 0.0
-            blues = 0.0
-            greens = 0.0
+#            reds = 0.0
+#            blues = 0.0
+#            greens = 0.0
 
-            r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+#            r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-            for i in range(height):
-                for j in range(width):
-                    reds += r[i, j]
-                    blues += b[i, j]
-                    greens += g[i, j]
+#            for i in range(height):
+#                for j in range(width):
+#                    reds += r[i, j]
+#                    blues += b[i, j]
+#                    greens += g[i, j]
 
-            reds = reds / greens
-            blues = blues / greens
+#            reds = reds / greens
+#            blues = blues / greens
 
             camera.awb_gains       =   (6.7, 1.7)
 
