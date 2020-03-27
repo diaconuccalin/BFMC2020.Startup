@@ -252,12 +252,13 @@ class CameraStreamer(WorkerProcess):
                 #    self.firstTime = False
 
                 if (self.firstTime == True) :
-                    firstTime = False
+                    self.firstTime = False
+                    time.sleep(3)
                     cv2.imwrite(img, '/home/pi/BFMC2020.Startup/foo.jpg')
 
                 img = signDetection(img)
 
-                result, img = cv2.imencode('.jpg', img, encode_param)
+                stamps, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
                 size   =  len(data)
 
