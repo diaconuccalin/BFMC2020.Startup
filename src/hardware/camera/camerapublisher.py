@@ -83,7 +83,7 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
         self.camera.awb_mode        =   'off'
-        self.camera.awb_gains       =   (6.7, 1.7)
+        self.camera.awb_gains       =   (1.0, 1.0)
         
 
         self.imgSize                =   (640, 480)    # the actual image size
@@ -94,7 +94,6 @@ class CameraPublisher(ThreadWithStop):
 
         # Obtain sample image
         time.sleep(5)
-        self.camera.awb_gains = (1.0, 1.0)
 
         img = np.zeros((480, 640, 3), np.uint8)
         self.camera.capture(img, format = 'rgb')
@@ -122,11 +121,8 @@ class CameraPublisher(ThreadWithStop):
                 greens += g[i, j]
 
         # Compute and apply gains
-        reds = reds / greens
-        blues = blues / greens
-
-        reds = 6.7
-        blues = 1.7
+        reds = greens / reds
+        blues = greens / blues
 
         self.camera.awb_gains = (reds, blues)
 
