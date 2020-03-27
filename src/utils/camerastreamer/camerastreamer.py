@@ -25,6 +25,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+
 import socket
 import struct
 import time
@@ -57,6 +58,8 @@ class CameraStreamer(WorkerProcess):
 
         self.serverIp   =  '192.168.0.199' # PC ip
         self.port       =  2244            # com port
+
+        self.firstTime = True
         
     # ===================================== RUN ==========================================
     def run(self):
@@ -243,6 +246,10 @@ class CameraStreamer(WorkerProcess):
                 #f.write(val)
 
                 #f.close()
+
+                if (self.firstTime == True) :
+                    firstTime = False
+                    cv2.imwrite(img, '/home/pi/BFMC2020.Startup/foo.jpg')
 
                 img = signDetection(img)
 
