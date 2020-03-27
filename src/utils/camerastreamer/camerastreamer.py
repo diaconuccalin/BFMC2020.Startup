@@ -226,8 +226,8 @@ class CameraStreamer(WorkerProcess):
             return img
 
         def calibrateWB(image):
-            #from picamera import PiCamera
-            #camera = PiCamera()
+            from picamera import PiCamera
+            camera = PiCamera()
 
             img = image.copy()
 
@@ -254,7 +254,7 @@ class CameraStreamer(WorkerProcess):
             reds = reds / greens
             blues = blues / greens
 
-            #camera._set_awb_gains((reds, blues))
+            camera.awb_gains       =   (6.7, 1.7)
 
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
