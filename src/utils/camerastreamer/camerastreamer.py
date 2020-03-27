@@ -246,6 +246,11 @@ class CameraStreamer(WorkerProcess):
 
                 #img = signDetection(img)
 
+                height = img.shape[0]
+                width = img.shape[1]
+                
+                img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
                 size   =  len(data)
