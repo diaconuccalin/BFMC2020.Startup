@@ -82,11 +82,19 @@ class CameraPublisher(ThreadWithStop):
         self.camera.shutter_speed   =   0   # auto
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
-        self.camera.awb_mode        =   'shade'
+        self.camera.awb_mode        =   'off'
         
 
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
+
+        self.calibrateWb()
+
+    #====================================== CALIBRATE WHITE BALANCE =======================
+    def calibrateWb(self):
+        from picamera import PiCamera
+
+        self.camera._set_awb_gains((1.7, 1.0))
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
