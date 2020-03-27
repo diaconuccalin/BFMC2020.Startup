@@ -89,6 +89,10 @@ class CameraPublisher(ThreadWithStop):
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
+        time.sleep(5)
+        self.camera.capture(img, format = 'rgb')
+        cv2.imwrite("foo3.jpg", img)
+
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
         stamp = time.gmtime()
