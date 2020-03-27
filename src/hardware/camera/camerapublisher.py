@@ -103,6 +103,7 @@ class CameraPublisher(ThreadWithStop):
         width = img.shape[1]
 
         img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+        img = cv2.GaussianBlur(img,(5,5),0)
 
         height = img.shape[0]
         width = img.shape[1]
