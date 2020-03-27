@@ -96,7 +96,7 @@ class CameraPublisher(ThreadWithStop):
 
         self.camera.start_preview()
         time.sleep(5)
-        self.camera.capture('/home/pi/foo.jpg')
+        self.camera.capture('/home/pi/BFMC2020.Startup/foo.jpg')
         self.camera.stop_preview()
 
         self.camera._set_awb_gains((1.7, 1.7))
