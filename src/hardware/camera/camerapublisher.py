@@ -141,6 +141,7 @@ class CameraPublisher(ThreadWithStop):
             if self.firstTime :
                 time.sleep(3)
                 cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', data)
+                self.firstTime = False
 
             stamp = time.time()
 
