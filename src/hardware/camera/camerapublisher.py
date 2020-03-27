@@ -123,10 +123,13 @@ class CameraPublisher(ThreadWithStop):
         print(reds)
         print(greens)
         print(blues)
-        
+
         # Compute and apply gains
         reds = greens / reds
         blues = greens / blues
+
+        print(reds)
+        print(blues)
 
         self.camera.awb_gains = (reds, blues)
 
