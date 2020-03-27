@@ -138,7 +138,7 @@ class CameraPublisher(ThreadWithStop):
             data  = np.frombuffer(data, dtype=np.uint8)
             data  = np.reshape(data, (480, 640, 3))
 
-            if(self.firstTime)
+            if self.firstTime :
                 time.sleep(3)
                 cv2.imwrite('/home/pi/BFMC2020.Startup/foo.jpg', data)
 
