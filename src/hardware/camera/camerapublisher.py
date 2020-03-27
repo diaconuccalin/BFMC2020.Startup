@@ -83,16 +83,48 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
         self.camera.awb_mode        =   'off'
-        self.camera.awb_gains       =   (1.7, 1.7)
+        self.camera.awb_gains       =   (6.7, 1.7)
         
 
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
-        img = np.zeros((480, 640, 3), np.uint8)
+
+        # WB calibration
+
+        # Obtain sample image
         time.sleep(5)
+
+        img = np.zeros((480, 640, 3), np.uint8)
         self.camera.capture(img, format = 'rgb')
-        cv2.imwrite("foo3.jpg", img)
+
+        # Obtain ROI
+        height = img.shape[0]
+        width = img.shape[1]
+
+        img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+
+        height = img.shape[0]
+        width = img.shape[1]
+
+        # Compute rgb levels in ROI
+        reds = 0.0
+        blues = 0.0
+        greens = 0.0
+
+        r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+        for i in range(height):
+            for j in range(width):
+                reds += r[i, j]
+                blues += b[i, j]
+                greens += g[i, j]
+
+        # Compute and apply gains
+        reds = reds / greens
+        blues = blues / greens
+
+        self.camera.awb_gains = (reds, blues)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):

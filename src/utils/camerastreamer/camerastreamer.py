@@ -82,7 +82,6 @@ class CameraStreamer(WorkerProcess):
         self.client_socket = socket.socket()
         self.connection = None
 
-        self.firstTime = True
         # Trying repeatedly to connect the camera receiver.
         try:
             while self.connection is None and not self._blocker.is_set():
@@ -224,38 +223,6 @@ class CameraStreamer(WorkerProcess):
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
             return img
-
-        def calibrateWB(image):
-            from picamera import PiCamera
-            camera = PiCamera()
-
-#            img = image.copy()
-
-#            height = img.shape[0]
-#            width = img.shape[1]
-
-#            img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
-
-#            height = img.shape[0]
-#            width = img.shape[1]
-
-#            reds = 0.0
-#            blues = 0.0
-#            greens = 0.0
-
-#            r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-
-#            for i in range(height):
-#                for j in range(width):
-#                    reds += r[i, j]
-#                    blues += b[i, j]
-#                    greens += g[i, j]
-
-#            reds = reds / greens
-#            blues = blues / greens
-
-            camera.awb_gains       =   (6.7, 1.7)
-
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -277,11 +244,7 @@ class CameraStreamer(WorkerProcess):
 
                 #f.close()
 
-                #if(self.firstTime):
-                    #calibrateWB(img)
-                    #self.firstTime = False
-
-                img = signDetection(img)
+                #img = signDetection(img)
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
