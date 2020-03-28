@@ -40,9 +40,8 @@ class MovementControl(WorkerProcess):
 
     def _listen_for_steering(self, inP):
         while True:
-            print("TEST")
             try:
-                value = inP
+                value = inP.recv()
                 print(value)
             except Exception as e:
                 print("Listening error:")
