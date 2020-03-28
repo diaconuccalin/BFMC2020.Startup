@@ -14,8 +14,6 @@ class MovementControl(WorkerProcess):
         outPs : list(Pipe) 
             List of output pipes (order does not matter)
         """
-
-        self.speed = 19.0
         self.angle = 0.0
 
         super(MovementControl,self).__init__(inPs, outPs)
@@ -33,6 +31,7 @@ class MovementControl(WorkerProcess):
     def run(self):
         """Apply the initializing methods and start the threads
         """
+        self.speed = 19.0
         super(MovementControl,self).run()
 
     def stop(self):
