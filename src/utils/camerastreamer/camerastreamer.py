@@ -40,10 +40,10 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
-    self.pid = PID(1, 0.1, 0.05, setpoint = 1)
-
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
+        self.pid = PID(1, 0.1, 0.05, setpoint = 1)
+        
         """Process used for sending images over the network. UDP protocol is used. The
         image is compressed before it is send. 
 
