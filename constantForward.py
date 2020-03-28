@@ -41,6 +41,7 @@ class ConstantForward(WorkerProcess):
         
         data['action'] = 'MCTL'
         data['speed'] = float(speed/100.0)
+        data['steerAngle'] = 0.0
         
         try:
             for outP in outPs:
