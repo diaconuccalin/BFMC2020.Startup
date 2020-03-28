@@ -15,13 +15,17 @@ class MovementControl(WorkerProcess):
             List of output pipes (order does not matter)
         """
 
+        self.speed = 19.0
+        self.angle = 0.0
+        self._update()
+
         super(MovementControl,self).__init__(inPs, outPs)
 
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
         """
-        #sendTh = Thread(name='SendCommand',target = self._sendSpeed, args = ())
-        #self.threads.append(sendTh)
+        sendTh = Thread(name='SendCommand',target = self._update, args = ())
+        self.threads.append(sendTh)
 
     # ===================================== RUN ==========================================
     def run(self):
@@ -30,10 +34,16 @@ class MovementControl(WorkerProcess):
         super(MovementControl,self).run()
 
     def stop(self):
-        self._sendSpeed(speed = 0.0)
+        self.speed = 0.0
+        self._update()
         super(MovementControl, self).stop()
 
-    def _sendSpeed(self, speed = 19.0):
+    def _listen_for_steering(self):
+        while True:
+            value = self.inPs[0]
+            print(value)
+
+    def _update(self):
         """Sends the requested speed to the microcontroller.
         
         Returns
@@ -41,14 +51,15 @@ class MovementControl(WorkerProcess):
         dict
             It contains the robot current control state, speed and angle. 
         """
+
         data = {}
         
-        if(speed != 0):
+        if(self.speed != 0):
             data['action'] = 'MCTL'
-            data['speed'] = float(speed/100.0)
+            data['speed'] = float(self.speed/100.0)
         else:
             data['action'] = 'BRAK'
-        data['steerAngle'] = 0.0
+        data['steerAngle'] = self.angle
         
         try:
             for outP in self.outPs:

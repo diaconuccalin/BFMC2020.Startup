@@ -17,16 +17,16 @@ enableLateralControl    =   True
 #================================ PROCESSES ==============================================
 allProcesses = list()
 
+lcR, lcS = Pipe(duplex = False)
+
 if enableConstantForward:
     cfR, cfS = Pipe(duplex = False)
 
-    cfProc = MovementControl([], [cfS])
+    cfProc = MovementControl([lcR], [cfS])
     allProcesses.append(cfProc)
 
     shProc = SerialHandler([cfR], [])
     allProcesses.append(shProc)
-
-    MovementControl._sendSpeed(cfProc)
 
 if enableLateralControl:
     lkR, lkS = Pipe(duplex = False)
@@ -34,7 +34,7 @@ if enableLateralControl:
     camProc = CameraProcess([],[lkS])
     allProcesses.append(camProc)
 
-    lkProc = LaneKeeping([lkR], [])
+    lkProc = LaneKeeping([lkR], [lcS])
     allProcesses.append(lkProc)
 
 # Starting the processes
