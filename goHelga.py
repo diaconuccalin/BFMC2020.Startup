@@ -6,7 +6,7 @@ import signal
 from multiprocessing import Pipe, Process, Event 
 
 # utility imports
-import ConstantForward
+from constantForward import ConstantForward
 from src.hardware.serialhandler.serialhandler import SerialHandler
 
 
