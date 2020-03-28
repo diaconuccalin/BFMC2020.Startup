@@ -37,6 +37,7 @@ import cv2
 import math
 
 from src.utils.templates.workerprocess import WorkerProcess
+from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
     # ===================================== INIT =========================================
@@ -57,6 +58,9 @@ class CameraStreamer(WorkerProcess):
 
         self.serverIp   =  '192.168.0.199' # PC ip
         self.port       =  2244            # com port
+
+        self.pid = PID(1, 0.1, 0.05, setpoint = 1)
+        self.val = controlled_system.update(0)
         
     # ===================================== RUN ==========================================
     def run(self):
@@ -231,8 +235,13 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                #val, img, lines = laneKeeping(img)
-                #img = draw_lines(img, lines)
+                self.val, img, lines = laneKeeping(img)
+                img = draw_lines(img, lines)
+
+                control = self.pid(self.val)
+                self.val = controlled_system.update(control)
+
+                print(self.pid(self.val))
 
                 #f = open("log.txt", "a")
 
@@ -246,10 +255,10 @@ class CameraStreamer(WorkerProcess):
 
                 #img = signDetection(img)
 
-                height = img.shape[0]
-                width = img.shape[1]
-                
-                img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+                #height = img.shape[0]
+                #width = img.shape[1]
+
+                #img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
 
                 result, img = cv2.imencode('.jpg', img, encode_param)
                 data   =  img.tobytes()
