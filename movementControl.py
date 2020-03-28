@@ -17,7 +17,6 @@ class MovementControl(WorkerProcess):
 
         self.speed = 19.0
         self.angle = 0.0
-        self._update()
 
         super(MovementControl,self).__init__(inPs, outPs)
 
@@ -27,6 +26,9 @@ class MovementControl(WorkerProcess):
         sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], ))
         self.threads.append(sendTh)
 
+        updateTh = Thread(name='UpdateThread',target = self._update, args = (self.outPs, ))
+        self.threads.append(updateTh)
+
     # ===================================== RUN ==========================================
     def run(self):
         """Apply the initializing methods and start the threads
@@ -35,7 +37,7 @@ class MovementControl(WorkerProcess):
 
     def stop(self):
         self.speed = 0.0
-        self._update()
+        self._update(self.outPs)
         super(MovementControl, self).stop()
 
     def _listen_for_steering(self, inP):
@@ -47,7 +49,7 @@ class MovementControl(WorkerProcess):
                 print("Listening error:")
                 print(e)
 
-    def _update(self):
+    def _update(self, outPs):
         """Sends the requested speed to the microcontroller.
         
         Returns
@@ -55,20 +57,20 @@ class MovementControl(WorkerProcess):
         dict
             It contains the robot current control state, speed and angle. 
         """
-
-        data = {}
+        while True:
+            data = {}
         
-        if(self.speed != 0):
-            data['action'] = 'MCTL'
-            data['speed'] = float(self.speed/100.0)
-        else:
-            data['action'] = 'BRAK'
-        data['steerAngle'] = self.angle
+            if(self.speed != 0):
+                data['action'] = 'MCTL'
+                data['speed'] = float(self.speed/100.0)
+            else:
+                data['action'] = 'BRAK'
+            data['steerAngle'] = self.angle
         
-        try:
-            for outP in self.outPs:
-                outP.send(data)
+            try:
+                for outP in outPs:
+                    outP.send(data)
 
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                print(e)
         
