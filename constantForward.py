@@ -29,7 +29,11 @@ class ConstantForward(WorkerProcess):
         """
         super(ConstantForward,self).run()
 
-    def _sendSpeed(self, outPs, speed = 22.0):
+    def stop(self):
+        self._sendSpeed(self.outPs, speed = 0.0)
+        super(ConstantForward, self).stop()
+
+    def _sendSpeed(self, outPs, speed = 17.0):
         """Sends the requested speed to the microcontroller.
         
         Returns
@@ -39,8 +43,11 @@ class ConstantForward(WorkerProcess):
         """
         data = {}
         
-        data['action'] = 'MCTL'
-        data['speed'] = float(speed/100.0)
+        if(speed > 0):
+            data['action'] = 'MCTL'
+            data['speed'] = float(speed/100.0)
+        else:
+            data['action'] = 'BRAK'
         data['steerAngle'] = 0.0
         
         try:
