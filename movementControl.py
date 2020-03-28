@@ -37,6 +37,7 @@ class MovementControl(WorkerProcess):
 
     def stop(self):
         self.speed = 0.0
+        self._singleUpdate(self.outPs)
         super(MovementControl, self).stop()
 
     def _listen_for_steering(self, inP):
@@ -48,6 +49,22 @@ class MovementControl(WorkerProcess):
                 print("Listening error:")
                 print(e)
 
+    def _singleUpdate(self, outPs):
+        data = {}
+        if(self.speed != 0):
+            data['action'] = 'MCTL'
+            data['speed'] = float(self.speed/100.0)
+        else:
+            data['action'] = 'BRAK'
+        data['steerAngle'] = self.angle
+        
+        try:
+            for outP in outPs:
+                outP.send(data)
+
+        except Exception as e:
+            print(e)
+
     def _update(self, outPs):
         """Sends the requested speed to the microcontroller.
         
@@ -57,19 +74,6 @@ class MovementControl(WorkerProcess):
             It contains the robot current control state, speed and angle. 
         """
         while True:
-            data = {}
-        
-            if(self.speed != 0):
-                data['action'] = 'MCTL'
-                data['speed'] = float(self.speed/100.0)
-            else:
-                data['action'] = 'BRAK'
-            data['steerAngle'] = self.angle
-        
-            try:
-                for outP in outPs:
-                    outP.send(data)
-
-            except Exception as e:
-                print(e)
+            self._singleUpdate(outPs)
+            
         
