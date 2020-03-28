@@ -43,12 +43,12 @@ class LaneKeeping(WorkerProcess):
         """
         if self._blocker.is_set():
             return
-        streamTh = Thread(name='StreamSending',target = self._the_thread, args= (self.inPs[0], self.outPs, ))
+        streamTh = Thread(name='StreamSending',target = self._the_thread, args= (self.inPs[0], self.outPs[0], ))
         streamTh.daemon = True
         self.threads.append(streamTh)
         
     # ===================================== SEND THREAD ==================================
-    def _the_thread(self, inP, outPs):
+    def _the_thread(self, inP, outP):
         """Sending the frames received thought the input pipe to remote client by using a socket. 
         
         Parameters
@@ -88,8 +88,7 @@ class LaneKeeping(WorkerProcess):
 
                 val = self.pid(val)
                 
-                for outP in outPs:
-                    outP.send(val)
+                outP.send(val)
 
             except Exception as e:
                 print("Lane keeping error:")

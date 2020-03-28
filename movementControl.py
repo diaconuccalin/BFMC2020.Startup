@@ -39,7 +39,7 @@ class MovementControl(WorkerProcess):
         super(MovementControl, self).stop()
 
     def _listen_for_steering(self, inP):
-        #while True:
+        while True:
             try:
                 value = inP
                 print(value)
