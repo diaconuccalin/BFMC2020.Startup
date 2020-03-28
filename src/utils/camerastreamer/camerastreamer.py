@@ -40,6 +40,9 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
+    pid = PID(1, 0.1, 0.05, setpoint = 1)
+    val = controlled_system.update(0)
+
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Process used for sending images over the network. UDP protocol is used. The
@@ -58,9 +61,6 @@ class CameraStreamer(WorkerProcess):
 
         self.serverIp   =  '192.168.0.199' # PC ip
         self.port       =  2244            # com port
-
-        self.pid = PID(1, 0.1, 0.05, setpoint = 1)
-        self.val = controlled_system.update(0)
         
     # ===================================== RUN ==========================================
     def run(self):
@@ -235,13 +235,13 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                self.val, img, lines = laneKeeping(img)
+                val, img, lines = laneKeeping(img)
                 img = draw_lines(img, lines)
 
-                control = self.pid(self.val)
-                self.val = controlled_system.update(control)
+                control = pid(val)
+                val = controlled_system.update(control)
 
-                print(self.pid(self.val))
+                print(pid(val))
 
                 #f = open("log.txt", "a")
 
