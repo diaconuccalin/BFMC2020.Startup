@@ -2,7 +2,7 @@ from threading import Thread
 
 from src.utils.templates.workerprocess import WorkerProcess
 
-class ConstantForward(WorkerProcess):
+class MovementControl(WorkerProcess):
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Sets a constant speed to the vehicle
@@ -15,7 +15,7 @@ class ConstantForward(WorkerProcess):
             List of output pipes (order does not matter)
         """
 
-        super(ConstantForward,self).__init__(inPs, outPs)
+        super(MovementControl,self).__init__(inPs, outPs)
 
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
@@ -27,11 +27,11 @@ class ConstantForward(WorkerProcess):
     def run(self):
         """Apply the initializing methods and start the threads
         """
-        super(ConstantForward,self).run()
+        super(MovementControl,self).run()
 
     def stop(self):
         self._sendSpeed(self.outPs, speed = 0.0)
-        super(ConstantForward, self).stop()
+        super(MovementControl, self).stop()
 
     def _sendSpeed(self, outPs, speed = 19.0):
         """Sends the requested speed to the microcontroller.

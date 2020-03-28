@@ -6,7 +6,7 @@ import signal
 from multiprocessing import Pipe, Process, Event 
 
 # utility imports
-from constantForward import ConstantForward
+from movementControl import MovementControl
 from src.hardware.serialhandler.serialhandler import SerialHandler
 
 
@@ -20,7 +20,7 @@ allProcesses = list()
 if enableConstantForward:
     cfR, cfS = Pipe(duplex = False)
 
-    cfProc = ConstantForward([], [cfS])
+    cfProc = MovementControl([], [cfS])
     allProcesses.append(cfProc)
 
     shProc = SerialHandler([cfR], [])
