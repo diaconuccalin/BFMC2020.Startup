@@ -24,7 +24,7 @@ class MovementControl(WorkerProcess):
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
         """
-        sendTh = Thread(name='SendCommand',target = self._update, args = ())
+        sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = ())
         self.threads.append(sendTh)
 
     # ===================================== RUN ==========================================
