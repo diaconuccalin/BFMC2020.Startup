@@ -40,8 +40,12 @@ class MovementControl(WorkerProcess):
 
     def _listen_for_steering(self):
         while True:
-            value = self.inPs[0]
-            print(value)
+            try:
+                value = self.inPs[0]
+                print(value)
+            except Exception as e:
+                print("Listening error:")
+                print(e)
 
     def _update(self):
         """Sends the requested speed to the microcontroller.
