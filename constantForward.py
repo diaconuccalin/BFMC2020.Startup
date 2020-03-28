@@ -33,7 +33,7 @@ class ConstantForward(WorkerProcess):
         self._sendSpeed(self.outPs, speed = 0.0)
         super(ConstantForward, self).stop()
 
-    def _sendSpeed(self, outPs, speed = 17.0):
+    def _sendSpeed(self, outPs, speed = 19.0):
         """Sends the requested speed to the microcontroller.
         
         Returns
