@@ -24,7 +24,7 @@ class MovementControl(WorkerProcess):
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
         """
-        sendTh = Thread(name='SteeringListen',target = self._listen_for_steering)
+        sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], ))
         self.threads.append(sendTh)
 
     # ===================================== RUN ==========================================
@@ -38,10 +38,10 @@ class MovementControl(WorkerProcess):
         self._update()
         super(MovementControl, self).stop()
 
-    def _listen_for_steering(self):
+    def _listen_for_steering(self, inP):
         while True:
             try:
-                value = self.inPs[0]
+                value = inP
                 print(value)
             except Exception as e:
                 print("Listening error:")
