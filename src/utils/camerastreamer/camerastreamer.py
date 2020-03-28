@@ -40,6 +40,8 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
+    pid = PID()
+    
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Process used for sending images over the network. UDP protocol is used. The
@@ -82,8 +84,6 @@ class CameraStreamer(WorkerProcess):
         """
         self.client_socket = socket.socket()
         self.connection = None
-        
-        self.pid = PID()
 
         # Trying repeatedly to connect the camera receiver.
         try:
