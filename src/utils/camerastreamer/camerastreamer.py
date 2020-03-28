@@ -37,6 +37,7 @@ import cv2
 import math
 
 from src.utils.templates.workerprocess import WorkerProcess
+from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
     # ===================================== INIT =========================================
@@ -77,13 +78,12 @@ class CameraStreamer(WorkerProcess):
 
     # ===================================== INIT SOCKET ==================================
     def _init_socket(self):
-        from simple_pid import PID
         """Initialize the socket. 
         """
         self.client_socket = socket.socket()
         self.connection = None
         
-        self.pid = PID(1, 0.1, 0.05, setpoint=1)
+        self.pid = PID()
 
         # Trying repeatedly to connect the camera receiver.
         try:
@@ -223,7 +223,6 @@ class CameraStreamer(WorkerProcess):
 
         while True:
             try:
-                from simple_pid import PID
                 stamps, img = inP.recv()
 
                 val, img, lines = laneKeeping(img)
