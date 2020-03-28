@@ -42,8 +42,6 @@ from simple_pid import PID
 class CameraStreamer(WorkerProcess):
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
-        self.pid = PID(1, 0.1, 0.05, setpoint = 1)
-        
         """Process used for sending images over the network. UDP protocol is used. The
         image is compressed before it is send. 
 
@@ -84,6 +82,8 @@ class CameraStreamer(WorkerProcess):
         """
         self.client_socket = socket.socket()
         self.connection = None
+        
+        self.pid = PID(1, 0.1, 0.05, setpoint=1)
 
         # Trying repeatedly to connect the camera receiver.
         try:
