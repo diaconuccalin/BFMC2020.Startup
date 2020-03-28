@@ -37,7 +37,6 @@ class MovementControl(WorkerProcess):
 
     def stop(self):
         self.speed = 0.0
-        self._update(self.outPs)
         super(MovementControl, self).stop()
 
     def _listen_for_steering(self, inP):
