@@ -5,7 +5,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 class MovementControl(WorkerProcess):
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
-        """Sets a constant speed to the vehicle
+        """Controls the speed and steering of the vehicle
         
         Parameters
         ------------
@@ -20,8 +20,8 @@ class MovementControl(WorkerProcess):
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
         """
-        sendTh = Thread(name='SendCommand',target = self._sendSpeed, args = (self.outPs, ))
-        self.threads.append(sendTh)
+        #sendTh = Thread(name='SendCommand',target = self._sendSpeed, args = ())
+        #self.threads.append(sendTh)
 
     # ===================================== RUN ==========================================
     def run(self):
@@ -30,10 +30,10 @@ class MovementControl(WorkerProcess):
         super(MovementControl,self).run()
 
     def stop(self):
-        self._sendSpeed(self.outPs, speed = 0.0)
+        self._sendSpeed(speed = 0.0)
         super(MovementControl, self).stop()
 
-    def _sendSpeed(self, outPs, speed = 19.0):
+    def _sendSpeed(self, speed = 19.0):
         """Sends the requested speed to the microcontroller.
         
         Returns
@@ -43,7 +43,7 @@ class MovementControl(WorkerProcess):
         """
         data = {}
         
-        if(speed > 0):
+        if(speed != 0):
             data['action'] = 'MCTL'
             data['speed'] = float(speed/100.0)
         else:
@@ -51,7 +51,7 @@ class MovementControl(WorkerProcess):
         data['steerAngle'] = 0.0
         
         try:
-            for outP in outPs:
+            for outP in self.outPs:
                 outP.send(data)
 
         except Exception as e:

@@ -5,14 +5,14 @@ import time
 import signal
 from multiprocessing import Pipe, Process, Event 
 
-# utility imports
 from movementControl import MovementControl
 from src.hardware.serialhandler.serialhandler import SerialHandler
-
+from src.hardware.camera.cameraprocess import CameraProcess
+from laneKeeping import LaneKeeping
 
 # =============================== CONFIG =================================================
 enableConstantForward   =   True
-enableLateralControl    =   False
+enableLateralControl    =   True
 
 #================================ PROCESSES ==============================================
 allProcesses = list()
@@ -25,6 +25,17 @@ if enableConstantForward:
 
     shProc = SerialHandler([cfR], [])
     allProcesses.append(shProc)
+
+    MovementControl._sendSpeed(cfProc)
+
+if enableLateralControl:
+    lkR, lkS = Pipe(duplex = False)
+
+    camProc = CameraProcess([],[lkS])
+    allProcesses.append(camProc)
+
+    lkProc = LaneKeeping([lkR], [])
+    allProcesses.append(lkProc)
 
 # Starting the processes
 print("Starting the processes!",allProcesses)
