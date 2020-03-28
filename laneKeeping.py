@@ -92,6 +92,7 @@ class LaneKeeping(WorkerProcess):
                     outP.send(val)
 
             except Exception as e:
+                print("Lane keeping error:")
                 print(e)
 
             
