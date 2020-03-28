@@ -130,15 +130,6 @@ class CameraStreamer(WorkerProcess):
                     else:
                         total = total + (x2 - x1) / (y2 - y1)
 
-            if(self.count < 30):
-                self.count = self.count + 1
-                self.summ = self.summ + total
-            elif(self.count == 30):
-                self.avg = self.summ / 30
-                self.count = self.count + 1
-            else:
-                self.avg = (self.avg * 29 + total) / 30
-
             return total, img, lines
 
 
