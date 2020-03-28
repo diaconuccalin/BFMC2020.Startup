@@ -20,7 +20,7 @@ allProcesses = list()
 if enableConstantForward:
     cfR, cfS = Pipe(duplex = False)
 
-    cfProc = ConstantForward([cfS])
+    cfProc = ConstantForward([], [cfS])
     allProcesses.append(cfProc)
 
     shProc = SerialHandler([cfR], [])

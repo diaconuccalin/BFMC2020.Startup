@@ -4,16 +4,18 @@ from src.utils.templates.workerprocess import WorkerProcess
 
 class ConstantForward(WorkerProcess):
     # ===================================== INIT =========================================
-    def __init__(self, outPs):
+    def __init__(self, inPs, outPs):
         """Sets a constant speed to the vehicle
         
         Parameters
         ------------
+        inPs  : list(Pipe)
+            List of input pipes (not used)
         outPs : list(Pipe) 
             List of output pipes (order does not matter)
         """
 
-        super(ConstantForward,self).__init__(outPs)
+        super(ConstantForward,self).__init__(inPs, outPs)
 
     def _init_threads(self):
         """Initialize the read thread to transmite the received messages to other processes. 
