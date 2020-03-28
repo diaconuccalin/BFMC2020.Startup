@@ -41,7 +41,6 @@ from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
     pid = PID(1, 0.1, 0.05, setpoint = 1)
-    val = controlled_system.update(0)
 
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
@@ -238,10 +237,8 @@ class CameraStreamer(WorkerProcess):
                 val, img, lines = laneKeeping(img)
                 img = draw_lines(img, lines)
 
-                control = pid(val)
-                val = controlled_system.update(control)
-
-                print(pid(val))
+                val = pid(val)
+                print(val)
 
                 #f = open("log.txt", "a")
 
