@@ -40,6 +40,7 @@ class MovementControl(WorkerProcess):
 
     def _listen_for_steering(self, inP):
         while True:
+            print("TEST")
             try:
                 value = inP
                 print(value)
