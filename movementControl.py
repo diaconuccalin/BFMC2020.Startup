@@ -44,7 +44,8 @@ class MovementControl(WorkerProcess):
     def _listen_for_steering(self, inP, outPs):
         while True:
             try:
-                self.angle = inP.recv()
+                value = inP.recv()
+                self.angle = (float)value
                 self._singleUpdate(outPs)
             except Exception as e:
                 print("Listening error:")
