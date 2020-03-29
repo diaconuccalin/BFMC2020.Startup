@@ -15,6 +15,9 @@ class MovementControl(WorkerProcess):
             List of output pipes (order does not matter)
         """
         self.angle = 0.0
+        self.speed = 19.0
+
+        self._singleUpdate(self.outPs)
 
         super(MovementControl,self).__init__(inPs, outPs)
 
@@ -24,14 +27,10 @@ class MovementControl(WorkerProcess):
         sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], ))
         self.threads.append(sendTh)
 
-        updateTh = Thread(name='UpdateThread',target = self._update, args = (self.outPs, ))
-        self.threads.append(updateTh)
-
     # ===================================== RUN ==========================================
     def run(self):
         """Apply the initializing methods and start the threads
         """
-        self.speed = 19.0
         super(MovementControl,self).run()
 
     def stop(self):
