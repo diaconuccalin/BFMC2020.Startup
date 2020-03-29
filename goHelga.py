@@ -14,7 +14,7 @@ from src.utils.camerastreamer.camerastreamer       import CameraStreamer
 # =============================== CONFIG =================================================
 enableConstantForward   =   True
 enableLateralControl    =   True
-enableStream            =   True
+enableStream            =   False
 #================================ PROCESSES ==============================================
 allProcesses = list()
 
