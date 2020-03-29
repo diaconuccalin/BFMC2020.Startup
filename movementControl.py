@@ -25,8 +25,8 @@ class MovementControl(WorkerProcess):
 
         startTh = Thread(name='InitialStart', target = self._singleUpdate, args=(self.outPs, ))
         self.threads.append(startTh)
-        
-        sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], ))
+
+        sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], self.outPs, ))
         self.threads.append(sendTh)
         
 
@@ -41,11 +41,11 @@ class MovementControl(WorkerProcess):
         self._singleUpdate(self.outPs)
         super(MovementControl, self).stop()
 
-    def _listen_for_steering(self, inP):
+    def _listen_for_steering(self, inP, outPs):
         while True:
             try:
-                value = inP.recv()
-                print(value)
+                self.angle = inP.recv()
+                self._singleUpdate(outPs)
             except Exception as e:
                 print("Listening error:")
                 print(e)
@@ -65,16 +65,5 @@ class MovementControl(WorkerProcess):
 
         except Exception as e:
             print(e)
-
-    def _update(self, outPs):
-        """Sends the requested speed to the microcontroller.
-        
-        Returns
-        -------
-        dict
-            It contains the robot current control state, speed and angle. 
-        """
-        while True:
-            self._singleUpdate(outPs)
             
         
