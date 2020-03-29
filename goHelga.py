@@ -33,15 +33,20 @@ if enableConstantForward:
 if enableLateralControl:
     lkR, lkS = Pipe(duplex = False)
 
-    camProc = CameraProcess([],[lkS, camStS])
-    allProcesses.append(camProc)
-
-    lkProc = LaneKeeping([lkR], [lcS])
-    allProcesses.append(lkProc)
+    camOutPs = []
 
     if enableStream:
         streamProc = CameraStreamer([camStR], [])
         allProcesses.append(streamProc)
+        camOutPs = [lkS, camStS]
+    else
+        camOutPs = [lkS]
+
+    camProc = CameraProcess([],camOutPs)
+    allProcesses.append(camProc)
+
+    lkProc = LaneKeeping([lkR], [lcS])
+    allProcesses.append(lkProc)
 
 # Starting the processes
 print("Starting the processes!",allProcesses)
