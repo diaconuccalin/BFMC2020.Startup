@@ -39,7 +39,7 @@ if enableLateralControl:
         streamProc = CameraStreamer([camStR], [])
         allProcesses.append(streamProc)
         camOutPs = [lkS, camStS]
-    else
+    else:
         camOutPs = [lkS]
 
     camProc = CameraProcess([],camOutPs)
