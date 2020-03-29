@@ -9,15 +9,17 @@ from movementControl import MovementControl
 from src.hardware.serialhandler.serialhandler import SerialHandler
 from src.hardware.camera.cameraprocess import CameraProcess
 from laneKeeping import LaneKeeping
+from src.utils.camerastreamer.camerastreamer       import CameraStreamer
 
 # =============================== CONFIG =================================================
 enableConstantForward   =   True
 enableLateralControl    =   True
-
+enableStream            =   True
 #================================ PROCESSES ==============================================
 allProcesses = list()
 
 lcR, lcS = Pipe(duplex = False)
+camStR, camStS = Pipe(duplex = False)
 
 if enableConstantForward:
     cfR, cfS = Pipe(duplex = False)
@@ -31,11 +33,15 @@ if enableConstantForward:
 if enableLateralControl:
     lkR, lkS = Pipe(duplex = False)
 
-    camProc = CameraProcess([],[lkS])
+    camProc = CameraProcess([],[lkS, camStS])
     allProcesses.append(camProc)
 
     lkProc = LaneKeeping([lkR], [lcS])
     allProcesses.append(lkProc)
+
+    if enableStream:
+        streamProc = CameraStreamer([camStR], [])
+        allProcesses.append(streamProc)
 
 # Starting the processes
 print("Starting the processes!",allProcesses)

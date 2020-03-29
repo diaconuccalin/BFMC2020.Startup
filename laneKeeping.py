@@ -75,6 +75,8 @@ class LaneKeeping(WorkerProcess):
                     if y2 != y1:
                         total = total + (x2 - x1) / (y2 - y1)
 
+            print(total)
+
             return total
 
         while True:
