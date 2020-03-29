@@ -17,8 +17,6 @@ class MovementControl(WorkerProcess):
         self.angle = 0.0
         self.speed = 19.0
 
-        self._singleUpdate(self.outPs)
-
         super(MovementControl,self).__init__(inPs, outPs)
 
     def _init_threads(self):
@@ -26,6 +24,9 @@ class MovementControl(WorkerProcess):
         """
         sendTh = Thread(name='SteeringListen',target = self._listen_for_steering, args = (self.inPs[0], ))
         self.threads.append(sendTh)
+
+        startTh = Thread(name='InitialStart', target = self._singleUpdate, args=(self.outPs, ))
+        
 
     # ===================================== RUN ==========================================
     def run(self):
