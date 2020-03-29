@@ -85,7 +85,7 @@ class LaneKeeping(WorkerProcess):
 
                 val = laneKeeping(img)
 
-                val /= 2.5
+                val /= 3
 
                 val = self.pid(val)
                 
