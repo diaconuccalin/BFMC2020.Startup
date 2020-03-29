@@ -15,7 +15,7 @@ class MovementControl(WorkerProcess):
             List of output pipes (order does not matter)
         """
         self.angle = 0.0
-        self.speed = 19.0
+        self.speed = 15.0
 
         super(MovementControl,self).__init__(inPs, outPs)
 
@@ -38,6 +38,7 @@ class MovementControl(WorkerProcess):
 
     def stop(self):
         self.speed = 0.0
+        self.angle = 0.0
         self._singleUpdate(self.outPs)
         super(MovementControl, self).stop()
 
