@@ -13,7 +13,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class LaneKeeping(WorkerProcess):
-    pid = PID(Ki = 0.01, Kd = 0.01)
+    pid = PID(Ki = 0.05, Kd = 0.01)
     
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
@@ -83,7 +83,7 @@ class LaneKeeping(WorkerProcess):
 
                 val = laneKeeping(img)
 
-                val /= 3
+                val /= 4.5
 
                 val = self.pid(val)
                 print(val)
