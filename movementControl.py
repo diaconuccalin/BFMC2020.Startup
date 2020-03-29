@@ -45,7 +45,7 @@ class MovementControl(WorkerProcess):
         while True:
             try:
                 value = inP.recv()
-                self.angle = (float)value
+                self.angle = float(value)
                 self._singleUpdate(outPs)
             except Exception as e:
                 print("Listening error:")
