@@ -168,7 +168,7 @@ class CameraPublisher(ThreadWithStop):
         if reds < 0.1:
             reds = 0.1
 
-        self.camera.awb_gains = (reds, blues)
+        #self.camera.awb_gains = (reds, blues)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
