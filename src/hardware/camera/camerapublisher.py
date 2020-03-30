@@ -122,15 +122,9 @@ class CameraPublisher(ThreadWithStop):
 
         for i in range(height):
             for j in range(width):
-                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
                 reds += r[i, j] / 255 * r[i, j] / 255
                 blues += b[i, j] / 255 * b[i, j] / 255
                 greens += g[i, j] / 255 * g[i, j] / 255
-
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
-        #reds *= reds
-        #greens *= greens
-        #blues *= blues
 
         reds /= greens
         blues /= greens
@@ -139,10 +133,6 @@ class CameraPublisher(ThreadWithStop):
         print(blues)
 
         self.camera.awb_gains = (reds, blues)
-
-        #time.sleep(3)
-        #cv2.imwrite("waste.jpg", img)
-        #self.camera.capture(img, format = 'rgb')
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
