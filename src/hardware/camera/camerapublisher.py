@@ -131,6 +131,7 @@ class CameraPublisher(ThreadWithStop):
         print(blues)
 
         self.camera.awb_gains       =   (1.0, 2.0)
+        img = np.zeros((480, 640, 3), np.uint8)
         self.camera.capture(img, format = 'rgb')
         img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
         img = cv2.GaussianBlur(img,(5,5),0)
