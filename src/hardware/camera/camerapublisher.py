@@ -138,6 +138,9 @@ class CameraPublisher(ThreadWithStop):
 
         self.camera.awb_gains = (reds, blues)
 
+        self.camera.capture(img, format = 'rgb')
+        cv2.imwrite("wbtest.jpg", img)
+
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
         stamp = time.gmtime()
