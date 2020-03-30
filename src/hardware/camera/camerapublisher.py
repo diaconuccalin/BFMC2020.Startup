@@ -106,6 +106,8 @@ class CameraPublisher(ThreadWithStop):
         img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
         img = cv2.GaussianBlur(img,(5,5),0)
 
+        cv2.imwrite("wbtest.jpg", img)
+
         height = img.shape[0]
         width = img.shape[1]
 
@@ -139,9 +141,8 @@ class CameraPublisher(ThreadWithStop):
         self.camera.awb_gains = (reds, blues)
 
         #time.sleep(3)
-        cv2.imwrite("waste.jpg", img)
-        self.camera.capture(img, format = 'rgb')
-        cv2.imwrite("wbtest.jpg", img)
+        #cv2.imwrite("waste.jpg", img)
+        #self.camera.capture(img, format = 'rgb')
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
