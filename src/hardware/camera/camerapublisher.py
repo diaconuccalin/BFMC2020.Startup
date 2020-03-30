@@ -119,27 +119,18 @@ class CameraPublisher(ThreadWithStop):
         #r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
         for i in range(height):
-            localReds = 0
-            localGreens = 0
-            localBlues = 0
-
             for j in range(width):
                 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
-                localReds += (r[i, j] * r[i, j])
-                localBlues += (b[i, j] * b[i, j])
-                localGreens += (g[i, j] * g[i, j])
-
-            reds += (localReds / width)
-            greens += (localGreens / width)
-            blues += (localBlues / width)
+                reds += (g[i, j] * g[i, j]) / (r[i, j] * r[i, j])
+                blues += (g[i, j] * g[i, j]) / (b[i, j] * b[i, j])
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
         #reds *= reds
         #greens *= greens
         #blues *= blues
 
-        reds /= greens
-        blues /= greens
+        reds /= (height * width)
+        blues /= (height * width)
 
         print(reds)
         print(blues)
@@ -147,8 +138,6 @@ class CameraPublisher(ThreadWithStop):
         self.camera.awb_gains = (reds, blues)
 
         time.sleep(3)
-        self.camera.capture(img, format = 'rgb')
-        cv2.imwrite("wbtest.jpg", img)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
