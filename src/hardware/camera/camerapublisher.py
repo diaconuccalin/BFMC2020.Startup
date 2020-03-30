@@ -94,40 +94,49 @@ class CameraPublisher(ThreadWithStop):
         # WB calibration
 
         # Obtain sample image
-        #time.sleep(5)
+        time.sleep(5)
 
-        #img = np.zeros((480, 640, 3), np.uint8)
-        #self.camera.capture(img, format = 'rgb')
+        img = np.zeros((480, 640, 3), np.uint8)
+        self.camera.capture(img, format = 'rgb')
 
         # Obtain ROI
-        #height = img.shape[0]
-        #width = img.shape[1]
+        height = img.shape[0]
+        width = img.shape[1]
 
-        #img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
-        #img = cv2.GaussianBlur(img,(5,5),0)
+        img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
+        img = cv2.GaussianBlur(img,(5,5),0)
 
-        #height = img.shape[0]
-        #width = img.shape[1]
+        height = img.shape[0]
+        width = img.shape[1]
 
         # Compute rgb levels in ROI
-        #reds = 0.0
-        #blues = 0.0
+        reds = 0.0
+        greens = 0.0
+        blues = 0.0
 
+        r, g, b = cv2.split(img)
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
         #r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-        #for i in range(height):
-            #for j in range(width):
-                #reds += g[i, j] / r[i, j]
-                #blues += g[i, j] / b[i, j]
+        for i in range(height):
+            for j in range(width):
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
+                reds += (r[i, j] * r[i, j])
+                blues += (b[i, j] * b[i, j])
+                greens += (g[i, j] * g[i, j])
 
-        # Compute and apply gains
-        #reds /= (width * height)
-        #blues /= (width * height)
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
+        #reds *= reds
+        #greens *= greens
+        #blues *= blues
 
-        #print(reds)
-        #print(blues)
+        reds /= greens
+        blues /= greens
 
-        #self.camera.awb_gains = (reds, blues)
+        print(reds)
+        print(blues)
+
+        self.camera.awb_gains = (reds, blues)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
