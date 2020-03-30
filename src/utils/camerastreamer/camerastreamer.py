@@ -243,8 +243,8 @@ class CameraStreamer(WorkerProcess):
 
                 #img = signDetection(img)
 
-                #height = img.shape[0]
-                #width = img.shape[1]
+                height = img.shape[0]
+                width = img.shape[1]
 
                 img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
 
