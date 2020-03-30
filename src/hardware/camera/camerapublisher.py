@@ -215,35 +215,6 @@ class CameraPublisher(ThreadWithStop):
         print(greens)
         print(blues)
 
-        self.camera.awb_gains       =   (3.0, 1.0)
-        img = np.zeros((480, 640, 3), np.uint8)
-        self.camera.capture(img, format = 'rgb')
-        img = img[(int(0.7*height)):(int(0.9*height)), (int(0.3*width)):(int(0.7*width))]
-        img = cv2.GaussianBlur(img,(5,5),0)
-
-        height = img.shape[0]
-        width = img.shape[1]
-
-        # Compute rgb levels in ROI
-        reds = 0.0
-        greens = 0.0
-        blues = 0.0
-
-        r, g, b = cv2.split(img)
-
-        for i in range(height):
-            for j in range(width):
-                reds += r[i, j] / 255 * r[i, j] / 255
-                blues += b[i, j] / 255 * b[i, j] / 255
-                greens += g[i, j] / 255 * g[i, j] / 255
-
-        print()
-        print("---3 1---")
-        print(reds)
-        print(greens)
-        print(blues)
-
-
         reds /= greens
         blues /= greens
 
