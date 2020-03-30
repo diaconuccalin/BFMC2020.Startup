@@ -119,6 +119,7 @@ class CameraPublisher(ThreadWithStop):
         #r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
         for i in range(height):
+            print(i)
             for j in range(width):
                 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
                 reds += (g[i, j] * g[i, j]) / (r[i, j] * r[i, j])
