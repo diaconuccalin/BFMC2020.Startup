@@ -139,7 +139,8 @@ class CameraPublisher(ThreadWithStop):
         self.camera.awb_gains = (reds, blues)
 
         #time.sleep(3)
-        #self.camera.capture(img, format = 'rgb')
+        cv2.imwrite("waste.jpg", img)
+        self.camera.capture(img, format = 'rgb')
         cv2.imwrite("wbtest.jpg", img)
 
     # ===================================== GET STAMP ====================================
