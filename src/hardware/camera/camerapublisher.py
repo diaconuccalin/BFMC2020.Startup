@@ -119,11 +119,19 @@ class CameraPublisher(ThreadWithStop):
         #r, g, b = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
         for i in range(height):
+            localReds = 0
+            localGreens = 0
+            localBlues = 0
+
             for j in range(width):
                 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
-                reds += (r[i, j] * r[i, j])
-                blues += (b[i, j] * b[i, j])
-                greens += (g[i, j] * g[i, j])
+                localReds += (r[i, j] * r[i, j])
+                localBlues += (b[i, j] * b[i, j])
+                localGreens += (g[i, j] * g[i, j])
+
+            reds += (localReds / width)
+            greens += (localGreens / width)
+            blues += (localBlues / width)
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
         #reds *= reds
