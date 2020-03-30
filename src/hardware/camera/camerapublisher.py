@@ -138,6 +138,7 @@ class CameraPublisher(ThreadWithStop):
 
         self.camera.awb_gains = (reds, blues)
 
+        time.sleep(3)
         self.camera.capture(img, format = 'rgb')
         cv2.imwrite("wbtest.jpg", img)
 
