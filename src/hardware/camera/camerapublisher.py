@@ -132,6 +132,11 @@ class CameraPublisher(ThreadWithStop):
         print(reds)
         print(blues)
 
+        if blues < 0.1:
+            blues = 0.1
+        if reds < 0.1:
+            reds = 0.1
+
         self.camera.awb_gains = (blues, reds)
 
     # ===================================== GET STAMP ====================================
