@@ -132,7 +132,7 @@ class CameraPublisher(ThreadWithStop):
         print(reds)
         print(blues)
 
-        self.camera.awb_gains = (reds, blues)
+        self.camera.awb_gains = (blues, reds)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
