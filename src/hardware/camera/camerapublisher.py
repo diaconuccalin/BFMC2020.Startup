@@ -126,6 +126,10 @@ class CameraPublisher(ThreadWithStop):
                 blues += b[i, j] / 255 * b[i, j] / 255
                 greens += g[i, j] / 255 * g[i, j] / 255
 
+        print(reds)
+        print(greens)
+        print(blues)
+
         reds /= greens
         blues /= greens
 
@@ -137,7 +141,7 @@ class CameraPublisher(ThreadWithStop):
         if reds < 0.1:
             reds = 0.1
 
-        self.camera.awb_gains = (blues, reds)
+        self.camera.awb_gains = (reds, blues)
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
