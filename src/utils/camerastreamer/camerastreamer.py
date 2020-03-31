@@ -234,10 +234,10 @@ class CameraStreamer(WorkerProcess):
             y = prepareMask(y)
 
             # To display
-            h = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
-            r = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
-            b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
-            y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
+            #h = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
+            #r = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
+            #b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
+            #y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
             #topRow = np.concatenate((h, r), axis = 1)
             #bottomRow = np.concatenate((b, y), axis = 1)
