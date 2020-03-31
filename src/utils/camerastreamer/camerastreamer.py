@@ -167,8 +167,8 @@ class CameraStreamer(WorkerProcess):
             img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 
             kernel = np.ones((7, 7), np.uint8)
-            #img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-            img = cv2.dilate(img, kernel, iterations = 2)
+            img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+            img = cv2.dilate(img, kernel, iterations = 3)
 
             return img
 
@@ -217,13 +217,13 @@ class CameraStreamer(WorkerProcess):
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
-            ret, r2 = cv2.threshold(h, 255 - 125, 255, cv2.THRESH_BINARY)
+            ret, r2 = cv2.threshold(h, 255 - 128, 255, cv2.THRESH_BINARY)
             ret, b2 = cv2.threshold(h, 255 - 250, 255, cv2.THRESH_BINARY)
             ret, y2 = cv2.threshold(h, 255 - 158, 255, cv2.THRESH_BINARY)
 
             h = cv2.bitwise_not(h)
 
-            ret, r1 = cv2.threshold(h, 120, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 121, 255, cv2.THRESH_BINARY)
             ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
             ret, y1 = cv2.threshold(h, 152, 255, cv2.THRESH_BINARY)
             
