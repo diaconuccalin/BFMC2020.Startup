@@ -189,12 +189,10 @@ class CameraStreamer(WorkerProcess):
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
-            h = cv2.bitwise_not(h)
-
             # Create masks for red, blue, yellow
-            ret, r1 = cv2.threshold(h, 125, 255, cv2.THRESH_BINARY)
-            ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
-            ret, y1 = cv2.threshold(h, 152, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 255 - 125, 255, cv2.THRESH_BINARY)
+            ret, b1 = cv2.threshold(h, 255 - 244, 255, cv2.THRESH_BINARY)
+            ret, y1 = cv2.threshold(h, 255 - 152, 255, cv2.THRESH_BINARY)
 
             h = cv2.bitwise_not(h)
 
@@ -207,9 +205,9 @@ class CameraStreamer(WorkerProcess):
             b = cv2.bitwise_and(b1, b2)
 
             # Morphologies on masks
-            #r = prepareMask(r)
-            #b = prepareMask(b)
-            #y = prepareMask(y)
+            r = prepareMask(r)
+            b = prepareMask(b)
+            y = prepareMask(y)
 
             # To display
             h = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
