@@ -203,13 +203,16 @@ class CameraStreamer(WorkerProcess):
         """
 
         def signDetection(img):
-            original = img.copy()
-            original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
+            #original = img.copy()
+            #original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
 
             # Crop top right corner
             height = img.shape[0]
             width = img.shape[1]
             img = img[0:(int)(height/2), (int)(width/2):width]
+
+            original = img.copy()
+            original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
 
             height = img.shape[0]
             width = img.shape[1]
@@ -263,7 +266,6 @@ class CameraStreamer(WorkerProcess):
                 current_time = now.strftime("%H:%M:%S")
                 toSave = original[y:(y+h), x:(x+w)]
                 title = "red/" + str(self.imageNumber) + "-" + current_time + ".jpg"
-                print(title + str(cv2.imwrite(title, toSave)))
                 self.imageNumber += 1
 
             for i in range(len(blueRectangles)):
