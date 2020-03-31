@@ -187,7 +187,7 @@ class CameraStreamer(WorkerProcess):
 
             # Obtain hue
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
-            h = cv2.GaussianBlur(h, (5, 5), 0)
+            #h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
             ret, r1 = cv2.threshold(h, 125, 255, cv2.THRESH_BINARY)
@@ -205,9 +205,9 @@ class CameraStreamer(WorkerProcess):
             b = cv2.bitwise_and(b1, b2)
 
             # Morphologies on masks
-            r = prepareMask(r)
-            b = prepareMask(b)
-            y = prepareMask(y)
+            #r = prepareMask(r)
+            #b = prepareMask(b)
+            #y = prepareMask(y)
 
             # To display
             h = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
@@ -215,8 +215,8 @@ class CameraStreamer(WorkerProcess):
             b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
-            topRow = np.concatenate((h, r1), axis = 1)
-            bottomRow = np.concatenate((b1, y1), axis = 1)
+            topRow = np.concatenate((h, r), axis = 1)
+            bottomRow = np.concatenate((b, y), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
             return img
