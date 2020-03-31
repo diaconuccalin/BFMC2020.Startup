@@ -174,12 +174,12 @@ class CameraStreamer(WorkerProcess):
 
         def getBoxes(mask, threshold):
             rectangles = []
+            print("TEST")
             contours, hier = cv2.findContours(mask,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            print("TEST2")
             for cnt in contours:
                 if 1000<cv2.contourArea(cnt):
-                    print("TEST")
                     (x, y, w, h) = cv2.boundingRect(cnt)
-                    print("TEST2")
                     inside = False
                     for cnt2 in contours:
                         (x2, y2, w2, h2) = cv2.boundingRect(cnt2)
