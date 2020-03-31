@@ -202,6 +202,7 @@ class CameraStreamer(WorkerProcess):
             
             r = cv2.bitwise_and(r1, r2)
             y = cv2.bitwise_and(y1, y2)
+            b = cv2.bitwise_and(b1, b2)
 
             # Morphologies on masks
             r = prepareMask(r)
