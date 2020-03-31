@@ -190,15 +190,15 @@ class CameraStreamer(WorkerProcess):
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
-            ret, r2 = cv2.threshold(h, 128, 255, cv2.THRESH_BINARY)
-            ret, b2 = cv2.threshold(h, 249, 255, cv2.THRESH_BINARY)
-            ret, y2 = cv2.threshold(h, 158, 255, cv2.THRESH_BINARY)
-
-            h = cv2.bitwise_not(h)
-
             ret, r1 = cv2.threshold(h, 125, 255, cv2.THRESH_BINARY)
             ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
             ret, y1 = cv2.threshold(h, 153, 255, cv2.THRESH_BINARY)
+
+            h = cv2.bitwise_not(h)
+
+            ret, r2 = cv2.threshold(h, 128, 255, cv2.THRESH_BINARY)
+            ret, b2 = cv2.threshold(h, 249, 255, cv2.THRESH_BINARY)
+            ret, y2 = cv2.threshold(h, 158, 255, cv2.THRESH_BINARY)
             
             r = cv2.bitwise_and(r1, r2)
             y = cv2.bitwise_and(y1, y2)
@@ -215,8 +215,8 @@ class CameraStreamer(WorkerProcess):
             b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
-            topRow = np.concatenate((h, r), axis = 1)
-            bottomRow = np.concatenate((b, y), axis = 1)
+            topRow = np.concatenate((h, r1), axis = 1)
+            bottomRow = np.concatenate((b1, y1), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
             return img
