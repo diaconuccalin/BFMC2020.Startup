@@ -261,7 +261,7 @@ class CameraStreamer(WorkerProcess):
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
                 toSave = img[y:(y+h), x:(x+w)]
-                title = "/home/pi/samples/red/" + str(self.imageNumber) + "-" + current_time + ".jpg"
+                title = "/home/img/samples/red/" + str(self.imageNumber) + "-" + current_time + ".jpg"
                 print(title + str(cv2.imwrite(title, toSave)))
                 self.imageNumber += 1
 
@@ -272,7 +272,7 @@ class CameraStreamer(WorkerProcess):
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
                 toSave = img[y:(y+h), x:(x+w)]
-                title = "/home/pi/samples/blue/" + str(self.imageNumber) + "-" + current_time + ".jpg"
+                title = "/home/img/samples/blue/" + str(self.imageNumber) + "-" + current_time + ".jpg"
                 cv2.imwrite(title, toSave)
                 self.imageNumber += 1
             for i in range(len(yellowRectangles)):
@@ -282,7 +282,7 @@ class CameraStreamer(WorkerProcess):
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
                 toSave = img[y:(y+h), x:(x+w)]
-                title = "/home/pi/samples/yellow/" + str(self.imageNumber) + "-" + current_time + ".jpg"
+                title = "/home/img/samples/yellow/" + str(self.imageNumber) + "-" + current_time + ".jpg"
                 cv2.imwrite(title, toSave)
                 self.imageNumber += 1
 
