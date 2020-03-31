@@ -83,14 +83,15 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
 
-        self.camera.awb_mode        =   'off'
-        self.camera.awb_gains       =   (1.0, 1.0)
+        self.camera.awb_mode        =   'auto'
+        #self.camera.awb_gains       =   (1.0, 1.0)
         
 
         self.imgSize                =   (640, 480)    # the actual image size
         self.recordMode             =   False
 
 
+        """
         # WB calibration
 
         # Obtain sample image
@@ -228,6 +229,7 @@ class CameraPublisher(ThreadWithStop):
             reds = 0.1
 
         #self.camera.awb_gains = (reds, blues)
+        """
 
     # ===================================== GET STAMP ====================================
     def _get_timestamp(self):
