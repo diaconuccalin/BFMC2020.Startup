@@ -196,7 +196,7 @@ class CameraStreamer(WorkerProcess):
 
             h = cv2.bitwise_not(h)
 
-            ret, r1 = cv2.threshold(h, 125, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 121, 255, cv2.THRESH_BINARY)
             ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
             ret, y1 = cv2.threshold(h, 152, 255, cv2.THRESH_BINARY)
             
