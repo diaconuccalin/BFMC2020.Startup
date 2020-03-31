@@ -168,16 +168,14 @@ class CameraStreamer(WorkerProcess):
 
             #kernel = np.ones((5, 5), np.uint8)
             img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-            #img = cv2.dilate(img, kernel, iterations = 1)
+            img = cv2.dilate(img, kernel, iterations = 1)
 
             return img
 
         def getBoxes(mask, threshold):
             rectangles = []
-            print("TEST")
             #print(cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE))
             ignore, contours, hierarchy = cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-            print("TEST2")
             for cnt in contours:
                 if 1000<cv2.contourArea(cnt):
                     (x, y, w, h) = cv2.boundingRect(cnt)
@@ -258,13 +256,13 @@ class CameraStreamer(WorkerProcess):
 
             for i in range(len(redRectangles)):
                 (x, y, w, h) = redRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
             for i in range(len(blueRectangles)):
                 (x, y, w, h) = blueRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
             for i in range(len(yellowRectangles)):
                 (x, y, w, h) = yellowRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 255), 2)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
 
             return img
         
