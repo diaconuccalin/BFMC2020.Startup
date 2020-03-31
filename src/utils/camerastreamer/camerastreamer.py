@@ -177,7 +177,9 @@ class CameraStreamer(WorkerProcess):
             contours, hier = cv2.findContours(mask,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
             for cnt in contours:
                 if 1000<cv2.contourArea(cnt):
+                    print("TEST")
                     (x, y, w, h) = cv2.boundingRect(cnt)
+                    print("TEST2")
                     inside = False
                     for cnt2 in contours:
                         (x2, y2, w2, h2) = cv2.boundingRect(cnt2)
@@ -196,7 +198,7 @@ class CameraStreamer(WorkerProcess):
                 signs.append(signSelection)
             return signs
         """
-        
+
         def signDetection(img):
             original = img.copy()
 
@@ -244,8 +246,6 @@ class CameraStreamer(WorkerProcess):
             #topRow = np.concatenate((h, r), axis = 1)
             #bottomRow = np.concatenate((b, y), axis = 1)
             #img = np.concatenate((topRow, bottomRow), axis = 0)
-
-            print("TEST")
 
             redRectangles = getBoxes(r, 0.1)
             blueRectangles = getBoxes(b, 0.1)
