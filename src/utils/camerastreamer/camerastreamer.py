@@ -32,6 +32,7 @@ import numpy as np
 import datetime
 from multiprocessing import Process
 from threading import Thread
+from datetime import datetime
 
 import cv2
 import math
@@ -41,7 +42,8 @@ from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
     pid = PID()
-    
+    imageNumber = 0
+
     # ===================================== INIT =========================================
     def __init__(self, inPs, outPs):
         """Process used for sending images over the network. UDP protocol is used. The
@@ -168,7 +170,7 @@ class CameraStreamer(WorkerProcess):
 
             kernel = np.ones((5, 5), np.uint8)
             img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-            
+
             kernel = np.ones((11, 11), np.uint8)
             img = cv2.dilate(img, kernel, iterations = 3)
 
@@ -225,7 +227,7 @@ class CameraStreamer(WorkerProcess):
 
             h = cv2.bitwise_not(h)
 
-            ret, r1 = cv2.threshold(h, 121, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 118, 255, cv2.THRESH_BINARY)
             ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
             ret, y1 = cv2.threshold(h, 152, 255, cv2.THRESH_BINARY)
             
@@ -255,12 +257,34 @@ class CameraStreamer(WorkerProcess):
             for i in range(len(redRectangles)):
                 (x, y, w, h) = redRectangles[i]
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                toSave = img[y:(y+h), x:(x+w)]
+                title = "red/" + self.imageNumber + "-" + current_time
+                cv2.imwrite(title, toSave)
+                self.imageNumber += 1
+
             for i in range(len(blueRectangles)):
                 (x, y, w, h) = blueRectangles[i]
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                toSave = img[y:(y+h), x:(x+w)]
+                title = "blue/" + self.imageNumber + "-" + current_time
+                cv2.imwrite(title, toSave)
+                self.imageNumber += 1
             for i in range(len(yellowRectangles)):
                 (x, y, w, h) = yellowRectangles[i]
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                toSave = img[y:(y+h), x:(x+w)]
+                title = "yellow/" + self.imageNumber + "-" + current_time
+                cv2.imwrite(title, toSave)
+                self.imageNumber += 1
 
             topRow = np.concatenate((img, rr), axis = 1)
             bottomRow = np.concatenate((bb, yy), axis = 1)
