@@ -217,7 +217,7 @@ class CameraStreamer(WorkerProcess):
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
-            ret, r2 = cv2.threshold(h, 255 - 129, 255, cv2.THRESH_BINARY)
+            ret, r2 = cv2.threshold(h, 255 - 127, 255, cv2.THRESH_BINARY)
             ret, b2 = cv2.threshold(h, 255 - 249, 255, cv2.THRESH_BINARY)
             ret, y2 = cv2.threshold(h, 255 - 158, 255, cv2.THRESH_BINARY)
 
@@ -237,14 +237,10 @@ class CameraStreamer(WorkerProcess):
             y = prepareMask(y)
 
             # To display
-            #h = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
-            #r = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
-            #b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
-            #y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
-
-            #topRow = np.concatenate((h, r), axis = 1)
-            #bottomRow = np.concatenate((b, y), axis = 1)
-            #img = np.concatenate((topRow, bottomRow), axis = 0)
+            hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
+            rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
+            bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
+            yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
             redRectangles = getBoxes(r, 0.1)
             blueRectangles = getBoxes(b, 0.1)
@@ -263,6 +259,11 @@ class CameraStreamer(WorkerProcess):
             for i in range(len(yellowRectangles)):
                 (x, y, w, h) = yellowRectangles[i]
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+
+            topRow = np.concatenate((img, rr), axis = 1)
+            bottomRow = np.concatenate((bb, yy), axis = 1)
+            img = np.concatenate((topRow, bottomRow), axis = 0)
+            img = np.concatenate((img, hh), axis = 1)
 
             return img
         
