@@ -190,7 +190,7 @@ class CameraStreamer(WorkerProcess):
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
-            ret, r2 = cv2.threshold(h, 255 - 126, 255, cv2.THRESH_BINARY)
+            ret, r2 = cv2.threshold(h, 255 - 129, 255, cv2.THRESH_BINARY)
             ret, b2 = cv2.threshold(h, 255 - 249, 255, cv2.THRESH_BINARY)
             ret, y2 = cv2.threshold(h, 255 - 158, 255, cv2.THRESH_BINARY)
 
