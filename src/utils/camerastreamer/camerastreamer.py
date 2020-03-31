@@ -175,7 +175,7 @@ class CameraStreamer(WorkerProcess):
         def getBoxes(mask, threshold):
             rectangles = []
             print("TEST")
-            contours, hier = cv2.findContours(mask,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            contours, hierarchy = cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
             print("TEST2")
             for cnt in contours:
                 if 1000<cv2.contourArea(cnt):
