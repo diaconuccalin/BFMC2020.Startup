@@ -166,8 +166,10 @@ class CameraStreamer(WorkerProcess):
             img = cv2.erode(img, kernel, iterations=1)
             img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 
-            kernel = np.ones((7, 7), np.uint8)
+            kernel = np.ones((5, 5), np.uint8)
             img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+            
+            kernel = np.ones((11, 11), np.uint8)
             img = cv2.dilate(img, kernel, iterations = 3)
 
             return img
