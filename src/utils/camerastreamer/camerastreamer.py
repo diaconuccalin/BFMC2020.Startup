@@ -187,6 +187,7 @@ class CameraStreamer(WorkerProcess):
                         rectangles.append(((int)(x - threshold * w), (int)(y - threshold * h), (int)(w + 2 * threshold * w), (int)(h + 2 * threshold * h)))
             return rectangles
 
+        """
         def getSigns(rectangles, img):
             signs = []
             for i in range(len(rectangles)):
@@ -194,7 +195,8 @@ class CameraStreamer(WorkerProcess):
                 signSelection = img[y:(y+h), x:(x+w)]
                 signs.append(signSelection)
             return signs
-
+        """
+        
         def signDetection(img):
             original = img.copy()
 
@@ -243,6 +245,8 @@ class CameraStreamer(WorkerProcess):
             #bottomRow = np.concatenate((b, y), axis = 1)
             #img = np.concatenate((topRow, bottomRow), axis = 0)
 
+            print("TEST")
+
             redRectangles = getBoxes(r, 0.1)
             blueRectangles = getBoxes(b, 0.1)
             yellowRectangles = getBoxes(y, 0.4)
@@ -250,8 +254,6 @@ class CameraStreamer(WorkerProcess):
             #redSigns = getSigns(redRectangles, img)
             #blueSigns = getSigns(blueRectangles, img)
             #yellowSigns = getSigns(yellowRectangles, img)
-
-            print("TEST")
 
             for i in range(len(redRectangles)):
                 (x, y, w, h) = redRectangles[i]
