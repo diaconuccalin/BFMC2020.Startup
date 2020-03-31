@@ -295,6 +295,7 @@ class CameraStreamer(WorkerProcess):
             hh = cv2.resize(hh, (width, height), interpolation=cv2.INTER_AREA)
 
             img = np.concatenate((img, hh), axis = 1)
+            cv2.imwrite("test.jpg", img)
 
             return img
         
