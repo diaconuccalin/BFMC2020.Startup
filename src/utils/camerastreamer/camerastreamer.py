@@ -162,7 +162,7 @@ class CameraStreamer(WorkerProcess):
                 return img	
 
         def prepareMask(img):
-            kernel = np.ones((3, 3), np.uint8)
+            kernel = np.ones((5, 5), np.uint8)
             img = cv2.erode(img, kernel, iterations=1)
             img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 
@@ -171,6 +171,29 @@ class CameraStreamer(WorkerProcess):
             #img = cv2.dilate(img, kernel, iterations = 1)
 
             return img
+
+        def getBoxes(mask, threshold):
+            rectangles = []
+            contours, hier = cv2.findContours(mask,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+            for cnt in contours:
+                if 1000<cv2.contourArea(cnt):
+                    (x, y, w, h) = cv2.boundingRect(cnt)
+                    inside = False
+                    for cnt2 in contours:
+                        (x2, y2, w2, h2) = cv2.boundingRect(cnt2)
+                        if x2 < x and y2 < y and (x+w < x2+w2) and (y+h < y2+h2):
+                            inside = True
+                    if inside == False:
+                        rectangles.append(((int)(x - threshold * w), (int)(y - threshold * h), (int)(w + 2 * threshold * w), (int)(h + 2 * threshold * h)))
+            return rectangles
+
+        def getSigns(rectangles, img):
+            signs = []
+            for i in range(len(rectangles)):
+                (x, y, w, h) = rectangles[i]
+                signSelection = img[y:(y+h), x:(x+w)]
+                signs.append(signSelection)
+            return signs
 
         def signDetection(img):
             original = img.copy()
@@ -216,9 +239,27 @@ class CameraStreamer(WorkerProcess):
             b = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             y = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
-            topRow = np.concatenate((h, r), axis = 1)
-            bottomRow = np.concatenate((b, y), axis = 1)
-            img = np.concatenate((topRow, bottomRow), axis = 0)
+            #topRow = np.concatenate((h, r), axis = 1)
+            #bottomRow = np.concatenate((b, y), axis = 1)
+            #img = np.concatenate((topRow, bottomRow), axis = 0)
+
+            redRectangles = getBoxes(r, 0.1)
+            blueRectangles = getBoxes(b, 0.1)
+            yellowRectangles = getBoxes(y, 0.4)
+
+            #redSigns = getSigns(redRectangles, img)
+            #blueSigns = getSigns(blueRectangles, img)
+            #yellowSigns = getSigns(yellowRectangles, img)
+
+            for i in range(len(redRectangles)):
+                (x, y, w, h) = redRectangles[i]
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            for i in range(len(blueRectangles)):
+                (x, y, w, h) = blueRectangles[i]
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            for i in range(len(yellowRectangles)):
+                (x, y, w, h) = yellowRectangles[i]
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 255), 2)
 
             return img
         
