@@ -251,6 +251,8 @@ class CameraStreamer(WorkerProcess):
             #blueSigns = getSigns(blueRectangles, img)
             #yellowSigns = getSigns(yellowRectangles, img)
 
+            print("TEST")
+
             for i in range(len(redRectangles)):
                 (x, y, w, h) = redRectangles[i]
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
