@@ -162,7 +162,7 @@ class CameraStreamer(WorkerProcess):
                 return img	
 
         def prepareMask(img):
-            kernel = np.ones((5, 5), np.uint8)
+            kernel = np.ones((3, 3), np.uint8)
             img = cv2.erode(img, kernel, iterations=1)
             img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 
