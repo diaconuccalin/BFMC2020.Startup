@@ -380,17 +380,15 @@ class CameraStreamer(WorkerProcess):
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
-            print("TEST")
+            #topRow = np.concatenate((img, rr), axis = 1)
+            #bottomRow = np.concatenate((bb, yy), axis = 1)
+            #img = np.concatenate((topRow, bottomRow), axis = 0)
 
-            topRow = np.concatenate((img, rr), axis = 1)
-            bottomRow = np.concatenate((bb, yy), axis = 1)
-            img = np.concatenate((topRow, bottomRow), axis = 0)
+            #height = img.shape[0]
+            #width = img.shape[1]
+            #hh = cv2.resize(hh, (width, height), interpolation=cv2.INTER_AREA)
 
-            height = img.shape[0]
-            width = img.shape[1]
-            hh = cv2.resize(hh, (width, height), interpolation=cv2.INTER_AREA)
-
-            img = np.concatenate((img, hh), axis = 1)
+            #img = np.concatenate((img, hh), axis = 1)
 
             return original
         
