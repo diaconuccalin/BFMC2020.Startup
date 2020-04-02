@@ -362,10 +362,6 @@ class CameraStreamer(WorkerProcess):
             blueSigns = getSigns(blueRectangles, original)
             yellowSigns = getSigns(yellowRectangles, original)
 
-            print(redSigns)
-            print(blueSigns)
-            print(yellowSigns)
-
             for blueSign in blueSigns:
                 if isParking(blueSign) < 0.1:
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
@@ -383,6 +379,8 @@ class CameraStreamer(WorkerProcess):
                 if isPriority(yellowSign) < 0.1:
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
+
+            print("TEST")
 
             topRow = np.concatenate((img, rr), axis = 1)
             bottomRow = np.concatenate((bb, yy), axis = 1)
