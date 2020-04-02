@@ -192,7 +192,6 @@ class CameraStreamer(WorkerProcess):
                         rectangles.append(((int)(x - threshold * w), (int)(y - threshold * h), (int)(w + 2 * threshold * w), (int)(h + 2 * threshold * h)))
             return rectangles
 
-        """
         def getSigns(rectangles, img):
             signs = []
             for i in range(len(rectangles)):
@@ -200,19 +199,124 @@ class CameraStreamer(WorkerProcess):
                 signSelection = img[y:(y+h), x:(x+w)]
                 signs.append(signSelection)
             return signs
-        """
+
+        def isParking(sign):
+            # Store it directly in grayscale
+            sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
+            sample = cv2.imread("samples/parking.png", 0)
+
+            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
+
+            ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
+            edges = cv2.Canny(sign, 5, 200)
+
+            contours1, hierarchy = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy = cv2.findContours(thresh2, 2, 1)
+
+            # Take the second biggest area
+            # Or compare the 2 biggest areas (shape of sign + shape of P)
+            cntAux = contours1[0]
+            for cnt in contours1:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                    cntAux = cnt
+
+            cntAux2 = contours2[0]
+            for cnt in contours2:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                    cntAux2 = cnt
+
+            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+        def isCrosswalk(sign):
+            sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
+            sample = cv2.imread('sample/crosswalk.png', 0)
+
+            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
+
+            edges = cv2.Canny(sign, 5, 200)
+
+            kernel = np.ones((3, 3), np.uint8)
+
+            edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
+            sample = cv2.morphologyEx(sample, cv2.MORPH_CLOSE, kernel)
+
+            contours1, hierarchy = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+
+            cntAux = contours1[0]
+            for cnt in contours1:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                    cntAux = cnt
+
+            cntAux2 = contours2[0]
+            for cnt in contours2:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                    cntAux2 = cnt
+
+            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+        def isStop(sign):
+            sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
+            sample = cv2.imread('sample/stop.png', 0)
+
+            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
+
+            edges = cv2.Canny(size, 100, 200)
+
+            kernel = np.ones((4, 4), np.uint8)
+            edges = cv2.morphologyEx(edges, cv2.MORPH_DILATE, kernel)
+
+            ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
+
+            contours1, hierarchy = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+
+            cntAux = contours1[0]
+            for cnt in contours1:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                    cntAux = cnt
+
+            cntAux2 = contours2[0]
+            for cnt in contours2:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                    cntAux2 = cnt
+
+            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+        def isPriority(sign):
+            sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
+            sample = cv2.imread('sample/priority.png', 0)
+
+            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
+
+            sign = cv2.bitwise_not(sign)
+            sign = cv2.equalizeHist(sign)
+            
+            edges = cv2.Canny(sign, 100, 200)
+
+            contours1, hierarchy = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+
+            cntAux = contours1[0]
+            for cnt in contours1:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                    cntAux = cnt
+
+            cntAux2 = contours2[0]
+            for cnt in contours2:
+                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                    cntAux2 = cnt
+
+            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
         def signDetection(img):
-            #original = img.copy()
+            original = img.copy()
             #original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
 
             # Crop top right corner
             height = img.shape[0]
             width = img.shape[1]
             img = img[0:(int)(height/2), (int)(width/2):width]
-
-            original = img.copy()
-            original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
 
             height = img.shape[0]
             width = img.shape[1]
@@ -254,41 +358,27 @@ class CameraStreamer(WorkerProcess):
             blueRectangles = getBoxes(b, 0.1)
             yellowRectangles = getBoxes(y, 0.4)
 
-            #redSigns = getSigns(redRectangles, img)
-            #blueSigns = getSigns(blueRectangles, img)
-            #yellowSigns = getSigns(yellowRectangles, img)
+            redSigns = getSigns(redRectangles, original)
+            blueSigns = getSigns(blueRectangles, original)
+            yellowSigns = getSigns(yellowRectangles, original)
 
-            for i in range(len(redRectangles)):
-                (x, y, w, h) = redRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            for blueSign in blueSigns:
+                if isParking(blueSign) < 0.1:
+                    (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
+                    original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
+                if isCrosswalk(blueSign) < 0.1:
+                    (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
+                    original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
 
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
-                toSave = original[y:(y+h), x:(x+w)]
-                title = "red/" + str(self.imageNumber) + "-" + current_time + ".jpg"
-                cv2.imwrite(title, toSave)
-                self.imageNumber += 1
+            for redSign in redSigns:
+                if isStop(redSign) < 0.1:
+                    (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
+                    original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 0, 0), 2)
 
-            for i in range(len(blueRectangles)):
-                (x, y, w, h) = blueRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
-                toSave = original[y:(y+h), x:(x+w)]
-                title = "blue/" + str(self.imageNumber) + "-" + current_time + ".jpg"
-                cv2.imwrite(title, toSave)
-                self.imageNumber += 1
-            for i in range(len(yellowRectangles)):
-                (x, y, w, h) = yellowRectangles[i]
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
-
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
-                toSave = original[y:(y+h), x:(x+w)]
-                title = "yellow/" + str(self.imageNumber) + "-" + current_time + ".jpg"
-                cv2.imwrite(title, toSave)
-                self.imageNumber += 1
+            for yellowSign in yellowSigns:
+                if isPriority(yellowSign) < 0.1:
+                    (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
+                    original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
             topRow = np.concatenate((img, rr), axis = 1)
             bottomRow = np.concatenate((bb, yy), axis = 1)
@@ -300,7 +390,7 @@ class CameraStreamer(WorkerProcess):
 
             img = np.concatenate((img, hh), axis = 1)
 
-            return img
+            return original
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
