@@ -362,6 +362,10 @@ class CameraStreamer(WorkerProcess):
             blueSigns = getSigns(blueRectangles, original)
             yellowSigns = getSigns(yellowRectangles, original)
 
+            print(redSigns)
+            print(blueSigns)
+            print(yellowSigns)
+
             for blueSign in blueSigns:
                 if isParking(blueSign) < 0.1:
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
