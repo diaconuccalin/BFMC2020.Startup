@@ -241,6 +241,7 @@ class CameraStreamer(WorkerProcess):
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
+            print(ret)
             return ret
 
         def isCrosswalk(sign):
@@ -277,6 +278,7 @@ class CameraStreamer(WorkerProcess):
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
+            print(ret)
             return ret
 
         def isStop(sign):
@@ -312,6 +314,8 @@ class CameraStreamer(WorkerProcess):
                         cntAux2 = cnt
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+            
+            print(ret)
 
             return ret
 
@@ -346,6 +350,8 @@ class CameraStreamer(WorkerProcess):
                         cntAux2 = cnt
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+            
+            print(ret)
 
             return ret
 
