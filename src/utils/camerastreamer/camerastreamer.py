@@ -202,6 +202,9 @@ class CameraStreamer(WorkerProcess):
 
         def isParking(sign):
             # Store it directly in grayscale
+            if(sign is None):
+                return 1.0
+
             print("Turn sign to grayscale")
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
 
@@ -209,7 +212,7 @@ class CameraStreamer(WorkerProcess):
             sample = cv2.imread("samples/parking.png", 0)
 
             print("Resize sample")
-            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
+            sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
             print("Threshold sample")
             ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
@@ -250,10 +253,11 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isCrosswalk(sign):
+            if(sign is None):
+                return 1.0
+
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
             sample = cv2.imread('samples/crosswalk.png', 0)
-
-            print(sign.shape[0])
 
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
@@ -285,6 +289,9 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isStop(sign):
+            if(sign is None):
+                return 1.0
+
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
             sample = cv2.imread('samples/stop.png', 0)
 
@@ -318,6 +325,9 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isPriority(sign):
+            if(sign is None):
+                return 1.0
+                
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
             sample = cv2.imread('samples/priority.png', 0)
 
