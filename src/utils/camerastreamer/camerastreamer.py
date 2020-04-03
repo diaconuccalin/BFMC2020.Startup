@@ -407,13 +407,13 @@ class CameraStreamer(WorkerProcess):
             for blueSign in blueSigns:
                 print("Try parking")
 
-                if isinstance(blueSign, (list, np.ndarray)) and isParking(blueSign) < 0.1:
+                if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isParking(blueSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
                 print("Try crosswalk")
-                if isinstance(blueSign, (list, np.ndarray)) and isCrosswalk(blueSign) < 0.1:
+                if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isCrosswalk(blueSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     print("Draw rectangle")
@@ -421,7 +421,7 @@ class CameraStreamer(WorkerProcess):
 
             for redSign in redSigns:
                 print("Try stop")
-                if isinstance(redSign, (list, np.ndarray)) and isStop(redSign) < 0.1:
+                if isinstance(redSign, (list, np.ndarray)) and (blueSign is not None) and isStop(redSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
                     print("Draw rectangle")
@@ -429,7 +429,7 @@ class CameraStreamer(WorkerProcess):
 
             for yellowSign in yellowSigns:
                 print("Try priority")
-                if isinstance(yellowSign, (list, np.ndarray)) and isPriority(yellowSign) < 0.1:
+                if isinstance(yellowSign, (list, np.ndarray)) and (blueSign is not None) and isPriority(yellowSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     print("Draw rectangle")
