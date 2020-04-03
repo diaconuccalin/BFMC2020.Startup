@@ -202,30 +202,53 @@ class CameraStreamer(WorkerProcess):
 
         def isParking(sign):
             # Store it directly in grayscale
+            print("Turn sign to grayscale")
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
+
+            print("Get smample")
             sample = cv2.imread("samples/parking.png", 0)
 
+            print(sample)
+
+            print("Resize sample")
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
 
+            print("Threshold sample")
             ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
+
+            print("Apply canny on sign")
             edges = cv2.Canny(sign, 5, 200)
 
+            print("Find contours on cannied image")
             contours1, hierarchy = cv2.findContours(edges, 2, 1)
+
+            print("Find contours ont thresholded sample")
             contours2, hierarchy = cv2.findContours(thresh2, 2, 1)
 
             # Take the second biggest area
             # Or compare the 2 biggest areas (shape of sign + shape of P)
+            print("Prepare comparer for original")
             cntAux = contours1[0]
+
+            print("Find largest contour in original")
             for cnt in contours1:
                 if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
                     cntAux = cnt
 
+            print("Prepare comparer for sample")
             cntAux2 = contours2[0]
+
+            print("Find larges in sample")
             for cnt in contours2:
                 if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
                     cntAux2 = cnt
 
-            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+            print("Apply match")
+            ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+            print(ret)
+
+            return ret
 
         def isCrosswalk(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
