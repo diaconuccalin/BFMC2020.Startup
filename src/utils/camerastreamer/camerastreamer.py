@@ -220,11 +220,10 @@ class CameraStreamer(WorkerProcess):
             edges = cv2.Canny(sign, 5, 200)
 
             print("Find contours on cannied image")
-            print(cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE))
-            contours1, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contours1, hierarchy1, hierarchy2 = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             print("Find contours ont thresholded sample")
-            contours2, hierarchy = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contours2, hierarchy1, hierarchy2 = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             # Take the second biggest area
             # Or compare the 2 biggest areas (shape of sign + shape of P)
@@ -264,8 +263,8 @@ class CameraStreamer(WorkerProcess):
             edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
             sample = cv2.morphologyEx(sample, cv2.MORPH_CLOSE, kernel)
 
-            contours1, hierarchy = cv2.findContours(edges, 2, 1)
-            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+            contours1, hierarchy1, hierarchy2 = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy1, hierarchy2 = cv2.findContours(sample, 2, 1)
 
             cntAux = contours1[0]
             for cnt in contours1:
@@ -292,8 +291,8 @@ class CameraStreamer(WorkerProcess):
 
             ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
 
-            contours1, hierarchy = cv2.findContours(edges, 2, 1)
-            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+            contours1, hierarchy1, hierarchy2 = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy1, hierarchy2 = cv2.findContours(sample, 2, 1)
 
             cntAux = contours1[0]
             for cnt in contours1:
@@ -318,8 +317,8 @@ class CameraStreamer(WorkerProcess):
             
             edges = cv2.Canny(sign, 100, 200)
 
-            contours1, hierarchy = cv2.findContours(edges, 2, 1)
-            contours2, hierarchy = cv2.findContours(sample, 2, 1)
+            contours1, hierarchy1, hierarchy2 = cv2.findContours(edges, 2, 1)
+            contours2, hierarchy1, hierarchy2 = cv2.findContours(sample, 2, 1)
 
             cntAux = contours1[0]
             for cnt in contours1:
