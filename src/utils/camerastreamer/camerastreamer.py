@@ -201,6 +201,7 @@ class CameraStreamer(WorkerProcess):
             return signs
 
         def isParking(sign):
+            print(type(sign))
             # Store it directly in grayscale
             if(sign is None):
                 return 1.0
@@ -327,7 +328,7 @@ class CameraStreamer(WorkerProcess):
         def isPriority(sign):
             if(sign is None):
                 return 1.0
-                
+
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
             sample = cv2.imread('samples/priority.png', 0)
 
