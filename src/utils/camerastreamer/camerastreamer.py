@@ -232,6 +232,7 @@ class CameraStreamer(WorkerProcess):
 
             print("Find largest contour in original")
             for cnt in contours1:
+                print(cnt)
                 if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
                     cntAux = cnt
 
