@@ -424,9 +424,9 @@ class CameraStreamer(WorkerProcess):
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
-            topRow = np.concatenate((original, rr), axis = 1)
-            bottomRow = np.concatenate((bb, yy), axis = 1)
-            img = np.concatenate((topRow, bottomRow), axis = 0)
+            #topRow = np.concatenate((original, rr), axis = 1)
+            #bottomRow = np.concatenate((bb, yy), axis = 1)
+            #img = np.concatenate((topRow, bottomRow), axis = 0)
 
             #height = img.shape[0]
             #width = img.shape[1]
@@ -434,7 +434,7 @@ class CameraStreamer(WorkerProcess):
 
             #img = np.concatenate((img, hh), axis = 1)
 
-            return img
+            return original
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
