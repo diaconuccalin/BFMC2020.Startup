@@ -200,6 +200,9 @@ class CameraStreamer(WorkerProcess):
                 signs.append(signSelection)
             return signs
 
+        def elements(array):
+            return array.ndim and array.size
+
         def isParking(sign):
             print(type(sign))
             print(sign)
