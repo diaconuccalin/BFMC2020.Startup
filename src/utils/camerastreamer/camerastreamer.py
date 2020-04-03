@@ -204,7 +204,7 @@ class CameraStreamer(WorkerProcess):
             print(type(sign))
             print(sign)
             # Store it directly in grayscale
-            if(sign is None) or (sign.size() == 0):
+            if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
             print("Turn sign to grayscale")
@@ -257,7 +257,7 @@ class CameraStreamer(WorkerProcess):
         def isCrosswalk(sign):
             print(type(sign))
             print(sign)
-            if(sign is None) or (sign.size() == 0):
+            if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
@@ -295,7 +295,7 @@ class CameraStreamer(WorkerProcess):
         def isStop(sign):
             print(type(sign))
             print(sign)
-            if(sign is None) or (sign.size() == 0):
+            if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
@@ -333,7 +333,7 @@ class CameraStreamer(WorkerProcess):
         def isPriority(sign):
             print(type(sign))
             print(sign)
-            if(sign is None) or (sign.size() == 0):
+            if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
