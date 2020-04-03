@@ -202,6 +202,7 @@ class CameraStreamer(WorkerProcess):
 
         def isParking(sign):
             print(type(sign))
+            print(sign)
             # Store it directly in grayscale
             if(sign is None):
                 return 1.0
