@@ -424,7 +424,7 @@ class CameraStreamer(WorkerProcess):
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
-            topRow = np.concatenate((hh, rr), axis = 1)
+            topRow = np.concatenate((original, rr), axis = 1)
             bottomRow = np.concatenate((bb, yy), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
