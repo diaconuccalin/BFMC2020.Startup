@@ -223,28 +223,29 @@ class CameraStreamer(WorkerProcess):
             print("Find contours ont thresholded sample")
             ignore, contours2, hierarchy = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+            ret = 1.0
+
             # Take the second biggest area
             # Or compare the 2 biggest areas (shape of sign + shape of P)
-            print("Prepare comparer for original")
-            cntAux = contours1[0]
+            if contours1:
+                print("Prepare comparer for original")
+                cntAux = contours1[0]
 
-            print("Find largest contour in original")
-            for cnt in contours1:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
-                    cntAux = cnt
+                print("Find largest contour in original")
+                for cnt in contours1:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                        cntAux = cnt
 
-            print("Prepare comparer for sample")
-            cntAux2 = contours2[0]
+                print("Prepare comparer for sample")
+                cntAux2 = contours2[0]
 
-            print("Find larges in sample")
-            for cnt in contours2:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
-                    cntAux2 = cnt
+                print("Find larges in sample")
+                for cnt in contours2:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                        cntAux2 = cnt
 
-            print("Apply match")
-            ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
-
-            print(ret)
+                print("Apply match")
+                ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
             return ret
 
@@ -266,17 +267,22 @@ class CameraStreamer(WorkerProcess):
             ignore, contours1, hierarchy = cv2.findContours(edges, 2, 1)
             ignore, contours2, hierarchy = cv2.findContours(sample, 2, 1)
 
-            cntAux = contours1[0]
-            for cnt in contours1:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
-                    cntAux = cnt
+            ret = 1.0
 
-            cntAux2 = contours2[0]
-            for cnt in contours2:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
-                    cntAux2 = cnt
+            if contours1:
+                cntAux = contours1[0]
+                for cnt in contours1:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                        cntAux = cnt
 
-            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+                cntAux2 = contours2[0]
+                for cnt in contours2:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                        cntAux2 = cnt
+
+                ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+            return ret
 
         def isStop(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
@@ -294,17 +300,22 @@ class CameraStreamer(WorkerProcess):
             ignore, contours1, hierarchy = cv2.findContours(edges, 2, 1)
             ignore, contours2, hierarchy = cv2.findContours(sample, 2, 1)
 
-            cntAux = contours1[0]
-            for cnt in contours1:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
-                    cntAux = cnt
+            ret = 1.0
 
-            cntAux2 = contours2[0]
-            for cnt in contours2:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
-                    cntAux2 = cnt
+            if contours1:
+                cntAux = contours1[0]
+                for cnt in contours1:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                        cntAux = cnt
 
-            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+                cntAux2 = contours2[0]
+                for cnt in contours2:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                        cntAux2 = cnt
+
+                ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+            return ret
 
         def isPriority(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
@@ -320,17 +331,22 @@ class CameraStreamer(WorkerProcess):
             ignore, contours1, hierarchy = cv2.findContours(edges, 2, 1)
             ignore, contours2, hierarchy = cv2.findContours(sample, 2, 1)
 
-            cntAux = contours1[0]
-            for cnt in contours1:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
-                    cntAux = cnt
+            ret = 1.0
 
-            cntAux2 = contours2[0]
-            for cnt in contours2:
-                if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
-                    cntAux2 = cnt
+            if contours1:
+                cntAux = contours1[0]
+                for cnt in contours1:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
+                        cntAux = cnt
 
-            return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+                cntAux2 = contours2[0]
+                for cnt in contours2:
+                    if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
+                        cntAux2 = cnt
+
+                ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
+
+            return ret
 
         def signDetection(img):
             #original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
