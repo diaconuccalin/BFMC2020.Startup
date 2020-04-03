@@ -255,6 +255,8 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isCrosswalk(sign):
+            print(type(sign))
+            print(sign)
             if(sign is None):
                 return 1.0
 
@@ -291,6 +293,8 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isStop(sign):
+            print(type(sign))
+            print(sign)
             if(sign is None):
                 return 1.0
 
@@ -327,6 +331,8 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isPriority(sign):
+            print(type(sign))
+            print(sign)
             if(sign is None):
                 return 1.0
 
