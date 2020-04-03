@@ -208,7 +208,7 @@ class CameraStreamer(WorkerProcess):
             print("Get smample")
             sample = cv2.imread("samples/parking.png", 0)
 
-            print(sample)
+            cv2.imwrite("TEST.jpg", sample)
 
             print("Resize sample")
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
@@ -254,6 +254,8 @@ class CameraStreamer(WorkerProcess):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
             sample = cv2.imread('sample/crosswalk.png', 0)
 
+            print(sign.shape[0])
+            
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
             edges = cv2.Canny(sign, 5, 200)
