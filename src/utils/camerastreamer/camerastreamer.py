@@ -290,7 +290,7 @@ class CameraStreamer(WorkerProcess):
 
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
-            edges = cv2.Canny(size, 100, 200)
+            edges = cv2.Canny(sign, 100, 200)
 
             kernel = np.ones((4, 4), np.uint8)
             edges = cv2.morphologyEx(edges, cv2.MORPH_DILATE, kernel)
