@@ -392,7 +392,7 @@ class CameraStreamer(WorkerProcess):
             y = prepareMask(y)
 
             # To display
-            #hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
+            hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
             rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
             bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
@@ -424,7 +424,7 @@ class CameraStreamer(WorkerProcess):
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
-            topRow = np.concatenate((original, rr), axis = 1)
+            topRow = np.concatenate((hh, rr), axis = 1)
             bottomRow = np.concatenate((bb, yy), axis = 1)
             img = np.concatenate((topRow, bottomRow), axis = 0)
 
