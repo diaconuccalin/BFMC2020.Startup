@@ -220,10 +220,10 @@ class CameraStreamer(WorkerProcess):
             edges = cv2.Canny(sign, 5, 200)
 
             print("Find contours on cannied image")
-            contours1, hierarchy = cv2.findContours(edges, 2, 1)
+            contours1, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             print("Find contours ont thresholded sample")
-            contours2, hierarchy = cv2.findContours(thresh2, 2, 1)
+            contours2, hierarchy = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             # Take the second biggest area
             # Or compare the 2 biggest areas (shape of sign + shape of P)
