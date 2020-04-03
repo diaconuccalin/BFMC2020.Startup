@@ -220,6 +220,7 @@ class CameraStreamer(WorkerProcess):
             edges = cv2.Canny(sign, 5, 200)
 
             print("Find contours on cannied image")
+            print(cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE))
             contours1, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             print("Find contours ont thresholded sample")
