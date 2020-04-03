@@ -310,38 +310,62 @@ class CameraStreamer(WorkerProcess):
             return cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
         def signDetection(img):
-            original = img.copy()
             #original = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
 
             # Crop top right corner
+            print("Compute dimensions 1")
             height = img.shape[0]
             width = img.shape[1]
+
+            print("Crop image")
             img = img[0:(int)(height/2), (int)(width/2):width]
+
+            print("Copy image")
+
+            original = img.copy()
+
+            print("Compute dimensions 2")
 
             height = img.shape[0]
             width = img.shape[1]
 
             # Remove noise
+            print("Blur original image")
             img = cv2.GaussianBlur(img, (5, 5), 0)
 
             # Obtain hue
+            print("Split in HSV")
+
             h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+
+            print("Blur hue")
+
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
+            print("Apply low threshold")
+
             ret, r2 = cv2.threshold(h, 255 - 130, 255, cv2.THRESH_BINARY)
             ret, b2 = cv2.threshold(h, 255 - 250, 255, cv2.THRESH_BINARY)
             ret, y2 = cv2.threshold(h, 255 - 158, 255, cv2.THRESH_BINARY)
 
+            print("Negate bits in hue")
+
             h = cv2.bitwise_not(h)
+
+            print("Apply high threshold")
 
             ret, r1 = cv2.threshold(h, 124, 255, cv2.THRESH_BINARY)
             ret, b1 = cv2.threshold(h, 244, 255, cv2.THRESH_BINARY)
             ret, y1 = cv2.threshold(h, 152, 255, cv2.THRESH_BINARY)
+
+            print("Bitwise and on thresholdings")
             
             r = cv2.bitwise_and(r1, r2)
             y = cv2.bitwise_and(y1, y2)
             b = cv2.bitwise_and(b1, b2)
+
+            print("Starting applying morphologies on masks")
 
             # Morphologies on masks
             r = prepareMask(r)
@@ -349,18 +373,24 @@ class CameraStreamer(WorkerProcess):
             y = prepareMask(y)
 
             # To display
-            hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
-            rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
-            bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
-            yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
+            #hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
+            #rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
+            #bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
+            #yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
+
+            print("Starting get boxes (by color and area)")
 
             redRectangles = getBoxes(r, 0.1)
             blueRectangles = getBoxes(b, 0.1)
             yellowRectangles = getBoxes(y, 0.4)
 
-            redSigns = getSigns(redRectangles, original)
-            blueSigns = getSigns(blueRectangles, original)
-            yellowSigns = getSigns(yellowRectangles, original)
+            print("Starting cutting signs")
+
+            redSigns = getSigns(redRectangles, img)
+            blueSigns = getSigns(blueRectangles, img)
+            yellowSigns = getSigns(yellowRectangles, img)
+
+            print("Starting compare shape and drawing")
 
             for blueSign in blueSigns:
                 if isParking(blueSign) < 0.1:
@@ -379,6 +409,8 @@ class CameraStreamer(WorkerProcess):
                 if isPriority(yellowSign) < 0.1:
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
+
+            print("Done")
 
             #topRow = np.concatenate((img, rr), axis = 1)
             #bottomRow = np.concatenate((bb, yy), axis = 1)
