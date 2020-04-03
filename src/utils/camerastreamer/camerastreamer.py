@@ -406,13 +406,13 @@ class CameraStreamer(WorkerProcess):
 
             for blueSign in blueSigns:
                 print("Try parking")
-                if (blueSign.any() != None) and (blueSign != None) and isParking(blueSign) < 0.1:
+                if (blueSign.all() != None) and (blueSign != None) and isParking(blueSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
                 print("Try crosswalk")
-                if (blueSign.any() != None) and (blueSign != None) and isCrosswalk(blueSign) < 0.1:
+                if (blueSign.all() != None) and (blueSign != None) and isCrosswalk(blueSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     print("Draw rectangle")
@@ -420,7 +420,7 @@ class CameraStreamer(WorkerProcess):
 
             for redSign in redSigns:
                 print("Try stop")
-                if (redSign.any() != None) and (redSign != None) and isStop(redSign) < 0.1:
+                if (redSign.all() != None) and (redSign != None) and isStop(redSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
                     print("Draw rectangle")
@@ -428,7 +428,7 @@ class CameraStreamer(WorkerProcess):
 
             for yellowSign in yellowSigns:
                 print("Try priority")
-                if (yellowSign.any() != None) and (yellowSign != None) and isPriority(yellowSign) < 0.1:
+                if (yellowSign.all() != None) and (yellowSign != None) and isPriority(yellowSign) < 0.1:
                     print("Get coords")
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
                     print("Draw rectangle")
