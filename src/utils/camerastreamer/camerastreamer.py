@@ -204,31 +204,22 @@ class CameraStreamer(WorkerProcess):
             return array.ndim and array.size
 
         def isParking(sign):
-            print(type(sign))
-            print(sign)
             # Store it directly in grayscale
             if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
-            print("Turn sign to grayscale")
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
 
-            print("Get smample")
             sample = cv2.imread("samples/parking.png", 0)
 
-            print("Resize sample")
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
-            print("Threshold sample")
             ret, thresh2 = cv2.threshold(sample, 127, 255, 0)
 
-            print("Apply canny on sign")
             edges = cv2.Canny(sign, 5, 200)
 
-            print("Find contours on cannied image")
             ignore, contours1, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-            print("Find contours ont thresholded sample")
             ignore, contours2, hierarchy = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             ret = 1.0
@@ -236,30 +227,23 @@ class CameraStreamer(WorkerProcess):
             # Take the second biggest area
             # Or compare the 2 biggest areas (shape of sign + shape of P)
             if contours1:
-                print("Prepare comparer for original")
                 cntAux = contours1[0]
 
-                print("Find largest contour in original")
                 for cnt in contours1:
                     if cv2.contourArea(cnt) > cv2.contourArea(cntAux):
                         cntAux = cnt
 
-                print("Prepare comparer for sample")
                 cntAux2 = contours2[0]
 
-                print("Find larges in sample")
                 for cnt in contours2:
                     if cv2.contourArea(cnt) > cv2.contourArea(cntAux2):
                         cntAux2 = cnt
 
-                print("Apply match")
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
             return ret
 
         def isCrosswalk(sign):
-            print(type(sign))
-            print(sign)
             if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
@@ -296,8 +280,6 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isStop(sign):
-            print(type(sign))
-            print(sign)
             if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
@@ -334,8 +316,6 @@ class CameraStreamer(WorkerProcess):
             return ret
 
         def isPriority(sign):
-            print(type(sign))
-            print(sign)
             if(sign is None) or (elements(sign) == 0):
                 return 1.0
 
@@ -413,9 +393,9 @@ class CameraStreamer(WorkerProcess):
 
             # To display
             #hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
-            #rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
-            #bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
-            #yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
+            rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
+            bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
+            yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
             redRectangles = getBoxes(r, 0.1)
             blueRectangles = getBoxes(b, 0.1)
@@ -426,39 +406,27 @@ class CameraStreamer(WorkerProcess):
             yellowSigns = getSigns(yellowRectangles, img)
 
             for blueSign in blueSigns:
-                print("Try parking")
 
                 if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isParking(blueSign) < 0.1:
-                    print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
-                    print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
-                print("Try crosswalk")
                 if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isCrosswalk(blueSign) < 0.1:
-                    print("Get coords")
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
-                    print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
 
             for redSign in redSigns:
-                print("Try stop")
                 if isinstance(redSign, (list, np.ndarray)) and (redSign is not None) and isStop(redSign) < 0.1:
-                    print("Get coords")
                     (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
-                    print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 0, 0), 2)
 
             for yellowSign in yellowSigns:
-                print("Try priority")
                 if isinstance(yellowSign, (list, np.ndarray)) and (yellowSign is not None) and isPriority(yellowSign) < 0.1:
-                    print("Get coords")
                     (xx, yy, ww, hh) = yellowRectangles[yellowSigns.index(yellowSign)]
-                    print("Draw rectangle")
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 255, 0), 2)
 
-            #topRow = np.concatenate((img, rr), axis = 1)
-            #bottomRow = np.concatenate((bb, yy), axis = 1)
-            #img = np.concatenate((topRow, bottomRow), axis = 0)
+            topRow = np.concatenate((original, rr), axis = 1)
+            bottomRow = np.concatenate((bb, yy), axis = 1)
+            img = np.concatenate((topRow, bottomRow), axis = 0)
 
             #height = img.shape[0]
             #width = img.shape[1]
@@ -466,7 +434,7 @@ class CameraStreamer(WorkerProcess):
 
             #img = np.concatenate((img, hh), axis = 1)
 
-            return original
+            return img
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
