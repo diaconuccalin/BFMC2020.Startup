@@ -208,8 +208,6 @@ class CameraStreamer(WorkerProcess):
             print("Get smample")
             sample = cv2.imread("samples/parking.png", 0)
 
-            cv2.imwrite("TEST.jpg", sample)
-
             print("Resize sample")
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
 
@@ -252,10 +250,10 @@ class CameraStreamer(WorkerProcess):
 
         def isCrosswalk(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
-            sample = cv2.imread('sample/crosswalk.png', 0)
+            sample = cv2.imread('samples/crosswalk.png', 0)
 
             print(sign.shape[0])
-            
+
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
             edges = cv2.Canny(sign, 5, 200)
@@ -282,7 +280,7 @@ class CameraStreamer(WorkerProcess):
 
         def isStop(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
-            sample = cv2.imread('sample/stop.png', 0)
+            sample = cv2.imread('samples/stop.png', 0)
 
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_AREA)
 
@@ -310,7 +308,7 @@ class CameraStreamer(WorkerProcess):
 
         def isPriority(sign):
             sign = cv2.cvtColor(sign, cv2.COLOR_BGR2GRAY)
-            sample = cv2.imread('sample/priority.png', 0)
+            sample = cv2.imread('samples/priority.png', 0)
 
             sample = cv2.resize(sample, (sign.shape[0], sign.shape[0]), interpolation = cv2.INTER_LINEAR)
 
