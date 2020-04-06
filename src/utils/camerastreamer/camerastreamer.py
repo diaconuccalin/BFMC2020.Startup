@@ -133,9 +133,8 @@ class CameraStreamer(WorkerProcess):
                 print("1")
                 mask = np.zeros_like(img)
                 print("2")
-                channel_count = 1
                 print("3")
-                match_mask_color = (255,) * channel_count
+                match_mask_color = (255,)
                 print("4")
                 cv2.fillPoly(mask, vertices, match_mask_color)
                 print("5")
