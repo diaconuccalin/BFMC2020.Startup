@@ -41,7 +41,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
-    pid = PID(Ki = 0.1, Kd = 0.5)
+    pid = PID(Ki = 0.0, Kd = 0.0)
     imageNumber = 0
 
     # ===================================== INIT =========================================
@@ -121,6 +121,9 @@ class CameraStreamer(WorkerProcess):
             img = cv2.GaussianBlur(img, (7,7), 0)
 
             img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
+
+            kernel = np.ones((5, 5), np.uint8)
+            img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
 
             total = 0.0
             lines = cv2.HoughLinesP(img, rho=6, theta=np.pi/60, threshold=160, lines=np.array([]), minLineLength=40, maxLineGap=25)
