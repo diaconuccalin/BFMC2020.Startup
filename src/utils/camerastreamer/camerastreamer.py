@@ -132,13 +132,15 @@ class CameraStreamer(WorkerProcess):
             def region_of_interest(img, vertices):
                 mask = np.zeros_like(img)
                 channel_count = img.shape[2]
-                match_mask_color = (255, ) * channel_count
+                match_mask_color = (255,) * channel_count
                 cv2.fillPoly(mask, vertices, match_mask_color)
                 masked_image = cv2.bitwise_and(img, mask)
                 return masked_image
 
-            img = region_of_interest(img, np.array([region_of_interest_vertices], np.int32),)
-
+            cropped_image = region_of_interest(
+                img,
+                np.array([region_of_interest_vertices], np.int32),
+            )
 
             img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
 
