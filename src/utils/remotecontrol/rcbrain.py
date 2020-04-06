@@ -56,16 +56,16 @@ class RcBrain:
         """It's an example to process the keyboard events and convert them to commands for the robot.
         """
 
-        self.speed = 25.0
-        self.steerAngle = 30.0
+        self.speed = 0.0
+        self.steerAngle = 0.0
 
         #----------------- CONSTANT VALUES --------------------
         #this values do not change
         self.parameterIncrement =   0.1
         self.limit_configParam = RcBrainConfigParams(21.0,30.0,3.0,4.0)
 
-        self.startSpeed         =   0.0
-        self.startSteerAngle    =   30.0
+        self.startSpeed         =   9.0
+        self.startSteerAngle    =   1.0
 
         #----------------- DEFAULT VALUES ----------------------
         #when the RC is reset, this are the default values

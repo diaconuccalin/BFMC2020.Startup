@@ -120,6 +120,26 @@ class CameraStreamer(WorkerProcess):
             img = img[(int(height/1.8)):height, 0:width]
             img = cv2.GaussianBlur(img, (7,7), 0)
 
+            width = img.shape[1]
+            height = img.shape[0]
+
+            region_of_interest_vertices = [
+                (0, height),
+                (width / 2, 0),
+                (width, height),
+            ]
+
+            def region_of_interest(img, vertices):
+                mask = np.zeros_like(img)
+                channel_count = img.shape[2]
+                match_mask_color = (255, ) * channel_count
+                cv2.fillPoly(mask, vertices, match_mask_color)
+                masked_image = cv2.bitwise_and(img, mask)
+                return masked_image
+
+            img = region_of_interest(img, np.array([region_of_interest_vertices], np.int32),)
+
+
             img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
 
             kernel = np.ones((7, 7), np.uint8)
