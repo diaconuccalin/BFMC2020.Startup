@@ -449,7 +449,7 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                #val, img, lines = laneKeeping(img)
+                val, img, lines = laneKeeping(img)
                 img = draw_lines(img, lines)
 
                 val = self.pid(val)
