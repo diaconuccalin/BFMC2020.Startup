@@ -133,7 +133,7 @@ class CameraStreamer(WorkerProcess):
                 print("1")
                 mask = np.zeros_like(img)
                 print("2")
-                channel_count = img.shape[2]
+                channel_count = 1
                 print("3")
                 match_mask_color = (255,) * channel_count
                 print("4")
