@@ -120,6 +120,8 @@ class CameraStreamer(WorkerProcess):
             img = img[(int(height/1.8)):height, 0:width]
             img = cv2.GaussianBlur(img, (7,7), 0)
 
+            img = cv2.equalizeHist(img)
+
             img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
 
             total = 0.0
