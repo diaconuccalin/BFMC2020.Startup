@@ -41,7 +41,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
-    pid = PID(Ki = 0.0, Kd = 0.0)
+    pid = PID(Ki = 1.0, Kd = 0.0)
     imageNumber = 0
 
     # ===================================== INIT =========================================
@@ -122,7 +122,7 @@ class CameraStreamer(WorkerProcess):
 
             img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
 
-            kernel = np.ones((5, 5), np.uint8)
+            kernel = np.ones((7, 7), np.uint8)
             img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
 
             total = 0.0
