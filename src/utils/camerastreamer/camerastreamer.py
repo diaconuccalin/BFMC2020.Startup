@@ -124,9 +124,9 @@ class CameraStreamer(WorkerProcess):
             height = img.shape[0]
 
             region_of_interest_vertices = [
-                (0, height),
+                (0, height - 1),
                 (width / 2, 0),
-                (width, height),
+                (width - 1, height - 1),
             ]
 
             def region_of_interest(img, vertices):
