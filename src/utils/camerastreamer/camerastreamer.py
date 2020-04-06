@@ -130,19 +130,13 @@ class CameraStreamer(WorkerProcess):
             ]
 
             def region_of_interest(img, vertices):
-                print("1")
                 mask = np.zeros_like(img)
-                print("2")
-                print("3")
                 match_mask_color = (255,)
-                print("4")
                 cv2.fillPoly(mask, vertices, match_mask_color)
-                print("5")
                 masked_image = cv2.bitwise_and(img, mask)
-                print("6")
                 return masked_image
 
-            cropped_image = region_of_interest(
+            img = region_of_interest(
                 img,
                 np.array([region_of_interest_vertices], np.int32),
             )
