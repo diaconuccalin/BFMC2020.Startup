@@ -125,7 +125,8 @@ class CameraStreamer(WorkerProcess):
 
             region_of_interest_vertices = [
                 (0, height - 1),
-                (width / 2, 0),
+                (0.4*width, 0),
+                (0.6*width, 0),
                 (width - 1, height - 1),
             ]
 
