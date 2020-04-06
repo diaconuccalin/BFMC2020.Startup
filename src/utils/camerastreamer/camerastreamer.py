@@ -41,7 +41,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
-    pid = PID()
+    pid = PID(Ki = 0.1, Kd = 0.5)
     imageNumber = 0
 
     # ===================================== INIT =========================================
@@ -450,10 +450,10 @@ class CameraStreamer(WorkerProcess):
                 stamps, img = inP.recv()
 
                 #val, img, lines = laneKeeping(img)
-                #img = draw_lines(img, lines)
+                img = draw_lines(img, lines)
 
-                #val = self.pid(val)
-                #print(val)
+                val = self.pid(val)
+                print(val)
 
                 #f = open("log.txt", "a")
 
@@ -465,7 +465,7 @@ class CameraStreamer(WorkerProcess):
 
                 #f.close()
 
-                img = signDetection(img)
+                #img = signDetection(img)
 
                 #height = img.shape[0]
                 #width = img.shape[1]
