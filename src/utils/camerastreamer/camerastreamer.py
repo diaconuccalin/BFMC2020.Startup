@@ -41,7 +41,7 @@ from src.utils.templates.workerprocess import WorkerProcess
 from simple_pid import PID
 
 class CameraStreamer(WorkerProcess):
-    pid = PID(Ki = 0.0, Kd = 0.01)
+    pid = PID(Ki = 0.0, Kd = 0.0)
     imageNumber = 0
 
     # ===================================== INIT =========================================
