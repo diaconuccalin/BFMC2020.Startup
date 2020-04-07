@@ -266,7 +266,6 @@ class CameraStreamer(WorkerProcess):
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
-            print(ret)
             return ret
 
         def isCrosswalk(sign):
@@ -303,7 +302,6 @@ class CameraStreamer(WorkerProcess):
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
-            print(ret)
             return ret
 
         def isStop(sign):
@@ -339,8 +337,6 @@ class CameraStreamer(WorkerProcess):
                         cntAux2 = cnt
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
-            
-            print(ret)
 
             return ret
 
@@ -375,8 +371,6 @@ class CameraStreamer(WorkerProcess):
                         cntAux2 = cnt
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
-            
-            print(ret)
 
             return ret
 
@@ -423,7 +417,7 @@ class CameraStreamer(WorkerProcess):
             y = prepareMask(y)
 
             # To display
-            hh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
+            hhh = cv2.cvtColor(h, cv2.COLOR_GRAY2BGR)
             rr = cv2.cvtColor(r, cv2.COLOR_GRAY2BGR)
             bb = cv2.cvtColor(b, cv2.COLOR_GRAY2BGR)
             yy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
@@ -465,7 +459,7 @@ class CameraStreamer(WorkerProcess):
 
             #img = np.concatenate((img, hh), axis = 1)
 
-            return hh
+            return hhh
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
