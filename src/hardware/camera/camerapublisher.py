@@ -83,10 +83,12 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
 
-        self.camera.awb_mode        =   'cloudy'
+        self.camera.awb_mode        =   'auto'
 
         time.sleep(5)
-        #vals = self.camera.awb_gains
+
+        vals = self.camera.awb_gains
+        print (vals)
         #self.camera.awb_mode = 'off'
         #self.camera.awb_gains       =   vals
         
