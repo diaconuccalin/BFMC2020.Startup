@@ -89,8 +89,8 @@ class CameraPublisher(ThreadWithStop):
 
         vals = self.camera.awb_gains
         print (vals)
-        #self.camera.awb_mode = 'off'
-        #self.camera.awb_gains       =   vals
+        self.camera.awb_mode = 'off'
+        self.camera.awb_gains       =   vals
         
 
         self.imgSize                =   (640, 480)    # the actual image size
