@@ -436,15 +436,15 @@ class CameraStreamer(WorkerProcess):
                 if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isParking(blueSign) < 1.5:
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
-                    print("---")
                 if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isCrosswalk(blueSign) < 0.1:
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
 
             for redSign in redSigns:
-                if isinstance(redSign, (list, np.ndarray)) and (redSign is not None) and isStop(redSign) < 0.3:
+                if isinstance(redSign, (list, np.ndarray)) and (redSign is not None) and isStop(redSign) < 1.5:
                     (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 0, 0), 2)
+                    print()
 
             for yellowSign in yellowSigns:
                 if isinstance(yellowSign, (list, np.ndarray)) and (yellowSign is not None) and isPriority(yellowSign) < 0.1:
