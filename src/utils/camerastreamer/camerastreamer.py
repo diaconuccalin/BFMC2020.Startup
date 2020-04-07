@@ -440,7 +440,7 @@ class CameraStreamer(WorkerProcess):
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
 
             for redSign in redSigns:
-                if isinstance(redSign, (list, np.ndarray)) and (redSign is not None) and isStop(redSign) < 0.3:
+                if isinstance(redSign, (list, np.ndarray)) and (redSign is not None) and isStop(redSign) > 0.3:
                     (xx, yy, ww, hh) = redRectangles[redSigns.index(redSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (255, 0, 0), 2)
 
