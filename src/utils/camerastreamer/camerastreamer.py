@@ -123,10 +123,15 @@ class CameraStreamer(WorkerProcess):
             width = img.shape[1]
             height = img.shape[0]
 
+            img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
+
+            kernel = np.ones((7, 7), np.uint8)
+            img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+
             region_of_interest_vertices = [
                 (0, height - 1),
-                (0.3*width, 0),
-                (0.7*width, 0),
+                (0.25*width, 0),
+                (0.75*width, 0),
                 (width - 1, height - 1),
             ]
 
@@ -136,11 +141,6 @@ class CameraStreamer(WorkerProcess):
                 cv2.fillPoly(mask, vertices, match_mask_color)
                 masked_image = cv2.bitwise_and(img, mask)
                 return masked_image
-
-            img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, -8)
-
-            kernel = np.ones((7, 7), np.uint8)
-            img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
 
             img = region_of_interest(
                 img,
@@ -465,7 +465,7 @@ class CameraStreamer(WorkerProcess):
 
             #img = np.concatenate((img, hh), axis = 1)
 
-            return original
+            return hh
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
@@ -474,11 +474,11 @@ class CameraStreamer(WorkerProcess):
             try:
                 stamps, img = inP.recv()
 
-                val, img, lines = laneKeeping(img)
-                img = draw_lines(img, lines)
+                #val, img, lines = laneKeeping(img)
+                #img = draw_lines(img, lines)
 
-                val = self.pid(val)
-                print(val)
+                #val = self.pid(val)
+                #print(val)
 
                 #f = open("log.txt", "a")
 
@@ -490,7 +490,7 @@ class CameraStreamer(WorkerProcess):
 
                 #f.close()
 
-                #img = signDetection(img)
+                img = signDetection(img)
 
                 #height = img.shape[0]
                 #width = img.shape[1]
