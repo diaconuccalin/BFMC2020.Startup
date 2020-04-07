@@ -85,7 +85,9 @@ class CameraPublisher(ThreadWithStop):
 
         self.camera.awb_mode        =   'auto'
 
-        time.sleep(10)
+        time.sleep(3)
+
+        self.camera.awb_gains = (Fraction(150, 256), Fraction(95, 32))
 
         vals = self.camera.awb_gains
         print (vals)
