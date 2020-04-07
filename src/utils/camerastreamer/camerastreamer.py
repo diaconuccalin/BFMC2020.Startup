@@ -459,7 +459,7 @@ class CameraStreamer(WorkerProcess):
 
             #img = np.concatenate((img, hh), axis = 1)
 
-            return hhh
+            return img
         
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
         print('Start streaming')
