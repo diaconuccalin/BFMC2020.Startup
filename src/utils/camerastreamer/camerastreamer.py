@@ -338,6 +338,7 @@ class CameraStreamer(WorkerProcess):
 
                 ret = cv2.matchShapes(cntAux, cntAux2, 1, 0.0)
 
+            print(ret)
             return ret
 
         def isPriority(sign):
