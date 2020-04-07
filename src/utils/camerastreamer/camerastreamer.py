@@ -381,7 +381,7 @@ class CameraStreamer(WorkerProcess):
             height = img.shape[0]
             width = img.shape[1]
 
-            img = img[0:(int)(height/2), (int)(width/2):width]
+            img = img[0:(int)(height/1.5), (int)(width/2):width]
 
             original = img.copy()
 
