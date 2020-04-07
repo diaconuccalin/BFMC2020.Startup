@@ -87,7 +87,7 @@ class CameraPublisher(ThreadWithStop):
 
         time.sleep(3)
 
-        self.camera.awb_gains = (1.1, 2.7)
+        self.camera.awb_gains = (1.0, 2.8)
 
         #vals = self.camera.awb_gains
         #print (vals)
