@@ -83,7 +83,7 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
 
-        self.camera.awb_mode        =   'shade'
+        self.camera.awb_mode        =   'off'
 
         time.sleep(3)
 
