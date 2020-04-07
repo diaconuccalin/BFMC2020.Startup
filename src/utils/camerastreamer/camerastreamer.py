@@ -433,7 +433,7 @@ class CameraStreamer(WorkerProcess):
 
             for blueSign in blueSigns:
 
-                if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isParking(blueSign) > 0.5:
+                if isinstance(blueSign, (list, np.ndarray)) and (blueSign is not None) and isParking(blueSign) < 1.5:
                     (xx, yy, ww, hh) = blueRectangles[blueSigns.index(blueSign)]
                     original = cv2.rectangle(original, (xx, yy), (xx + ww, yy + hh), (0, 0, 255), 2)
                     print()
