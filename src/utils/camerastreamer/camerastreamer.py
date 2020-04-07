@@ -423,7 +423,7 @@ class CameraStreamer(WorkerProcess):
             yyy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
             redRectangles = getBoxes(r, 0.0)    # 0.1
-            blueRectangles = getBoxes(b, 0.4)   # 0.1
+            blueRectangles = getBoxes(b, 0.2)   # 0.1
             yellowRectangles = getBoxes(y, 0.0) # 0.4
 
             redSigns = getSigns(redRectangles, img)

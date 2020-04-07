@@ -83,7 +83,7 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
 
-        self.camera.awb_mode        =   'incandescent'
+        self.camera.awb_mode        =   'tungsten'
 
         time.sleep(5)
         #vals = self.camera.awb_gains
