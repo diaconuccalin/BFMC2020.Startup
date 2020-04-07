@@ -397,15 +397,15 @@ class CameraStreamer(WorkerProcess):
             h = cv2.GaussianBlur(h, (5, 5), 0)
 
             # Create masks for red, blue, yellow
-            ret, r2 = cv2.threshold(h, 255 - 132, 255, cv2.THRESH_BINARY)
-            ret, b2 = cv2.threshold(h, 255 - 254, 255, cv2.THRESH_BINARY)
-            ret, y2 = cv2.threshold(h, 255 - 148, 255, cv2.THRESH_BINARY)
+            ret, r2 = cv2.threshold(h, 255 - 140, 255, cv2.THRESH_BINARY)
+            ret, b2 = cv2.threshold(h, 255 - 241, 255, cv2.THRESH_BINARY)
+            ret, y2 = cv2.threshold(h, 255 - 162, 255, cv2.THRESH_BINARY)
 
             h = cv2.bitwise_not(h)
 
-            ret, r1 = cv2.threshold(h, 127, 255, cv2.THRESH_BINARY)
-            ret, b1 = cv2.threshold(h, 247, 255, cv2.THRESH_BINARY)
-            ret, y1 = cv2.threshold(h, 144, 255, cv2.THRESH_BINARY)
+            ret, r1 = cv2.threshold(h, 133, 255, cv2.THRESH_BINARY)
+            ret, b1 = cv2.threshold(h, 232, 255, cv2.THRESH_BINARY)
+            ret, y1 = cv2.threshold(h, 157, 255, cv2.THRESH_BINARY)
             
             r = cv2.bitwise_and(r1, r2)
             y = cv2.bitwise_and(y1, y2)
@@ -423,7 +423,7 @@ class CameraStreamer(WorkerProcess):
             yyy = cv2.cvtColor(y, cv2.COLOR_GRAY2BGR)
 
             redRectangles = getBoxes(r, 0.0)    # 0.1
-            blueRectangles = getBoxes(b, 0.2)   # 0.1
+            blueRectangles = getBoxes(b, 0.1)   # 0.1
             yellowRectangles = getBoxes(y, 0.0) # 0.4
 
             redSigns = getSigns(redRectangles, img)
