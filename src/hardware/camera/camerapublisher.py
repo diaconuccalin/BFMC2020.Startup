@@ -83,16 +83,16 @@ class CameraPublisher(ThreadWithStop):
         self.camera.contrast        =   0   # default
         self.camera.iso             =   0   # auto
 
-        self.camera.awb_mode        =   'auto'
+        self.camera.awb_mode        =   'off'
 
         time.sleep(3)
 
-        self.camera.awb_gains = (3.58, 2.98)
+        self.camera.awb_gains = (0.5, 2.98)
 
-        vals = self.camera.awb_gains
-        print (vals)
-        self.camera.awb_mode = 'off'
-        self.camera.awb_gains       =   vals
+        #vals = self.camera.awb_gains
+        #print (vals)
+        #self.camera.awb_mode = 'off'
+        #self.camera.awb_gains       =   vals
         
 
         self.imgSize                =   (640, 480)    # the actual image size
